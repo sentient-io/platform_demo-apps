@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Summarise Text</title>
+
+    <!-- Fav Icon -->
+    <link rel="icon" type="image/svg" href="assets/images/Sentient-io_fav.svg" />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="assets/style.css">
+
+    <!-- Google Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Below jQuery can be ignored if you testing with your own API key -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+
+<body>
+    <main>
+        <header>
+            <div class="description">
+                <div class="title">
+                    <img src="assets/images/icon_text-summary.svg" alt="">
+                    <h1>Summarise Text<sup class="tag">DEMO</sup> </h1>
+                </div>
+
+                <p>This demo app takes in an English text passage and generates a summary of up to a maximum of 168
+                    words.
+                    Do note that the input text should be between 80-512 characters.</p>
+            </div>
+            <aside>
+                <a href="https://platform.sentient.io/demoapps_detail/summarise_text" target="_PARENT"
+                    class="more-info">More Info</a>
+                <a href="https://github.com/sentient-io/platform_demo-apps/tree/main/summarise-text" target="_blank" class="demo-app-code">Demo App Code</a>
+            </aside>
+        </header>
+
+        <section>
+            <!-- ----------------------- -->
+            <!-- Main Demo App Functions -->
+            <!-- ----------------------- -->
+            <div id="form">
+                <span class="textarea-methods top">
+                    <p id='tryOutBtn' class="btn green" onclick="domElem.useInputExample()">Try out with sample
+                        text</p>
+                </span>
+                <textarea name="" id="textInput" rows="13"
+                    placeholder="Please input long paragraph of text, and click the summay button below to see the result."></textarea>
+                <span class="textarea-methods">
+                    <small id="textCount">0 / 512 words</small>
+
+                    <button class="button-restart" id="restartBtn" onclick="restart()" style="display: none;">
+                        <span class="material-icons mr-xs">
+                            refresh
+                        </span>
+                        Restart
+                    </button>
+                    <button class="green" id="summaryTextBtn" onclick="summaryText()">Summarise Text</button>
+                    <button class="hov-red" onclick="domElem.emptyInput()">Clear text</button>
+                </span>
+            </div>
+
+            <div id="textSumResult" style="display: none;">
+                <h3 id="sumResTitle">Text Summary Result</h3>
+                <p id="sumResTxt">Text Summary Result</p>
+                <p id="scoreRes" style="font-weight: bold; text-decoration: underline;">Confidence score (0-2): </p>
+            </div>
+            <!-- -END- Main Demo App Functions -->
+        </section>
+    </main>
+
+
+    <div class="loader" id="loader">
+        <img src="assets/images/sentie-loader.gif" alt="">
+    </div>
+
+
+    <!-- Footer contains copyright info, essential links -->
+    <footer>
+        <section>
+            <address>
+                <p>
+                    Designed and built by
+                    <a href="https://www.sentient.io/" target="_top">Sentient.io</a>
+                    with the help of our contributors.
+                </p>
+                <p>
+                    App version: 3.1.1
+                </p>
+            </address>
+            <a href="https://www.sentient.io/" target="_top">
+                <img src="assets/images/sentient-logo.png" alt="Sentient.io logo" class="logo">
+            </a>
+        </section>
+    </footer>
+</body>
+
+<!-- Disabled on 2022-Jan-17, for future upgrading purpose -->
+<!-- <script>
+    /** Detect if this page is opened inside an iframe */
+    if (window.location !== window.parent.location) {
+        /** Hide header and footer */
+        ['header', 'footer'].forEach(tag => {
+            document.getElementsByTagName(tag)[0].setAttribute('style', 'display:none')
+        })
+        /** Hide background */
+        document.getElementsByTagName('main')[0].setAttribute('class', 'iframe')
+    }
+</script> -->
+
+<script src="./config.js"></script>
+<script src="functions/dataModifiers.js"></script>
+<script src="functions/eventListeners.js"></script>
+<script src="functions/apiCalls.js"></script>
+
+</html>

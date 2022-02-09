@@ -1,0 +1,449 @@
+/* Import Nunito Sans font from google */
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap');
+/* ------------------Print---------------------- */
+* {
+	-webkit-print-color-adjust: exact !important;   
+	color-adjust: exact !important;                
+}
+print{           
+	@page{
+	   size: 16.5in 17.25in;
+   }
+}
+
+@page{
+size: 16.5in 17.25in;   
+}
+@media print{        
+	body {-webkit-print-color-adjust: exact;}
+	 @page{
+		size: 16.5in 17.25in;
+	}
+	a{text-decoration: none !important;}        
+}
+/* ------------------------------------------------ */
+
+:root {
+    /* Color valriables */
+    --prim-green: #8eaf04;
+    --dark-grey: #424143;
+    --medium-grey: #8f8f8f;
+    --grey: #bdbdbd;
+    --light-grey: #f5f5f5;
+    --beige: #cbac81;
+    --light-beige: #e4cba8;
+    --transparent: rgba(0, 0, 0, 0);
+    --transparent-white: rgba(255, 255, 255, 0.5);
+
+    /* Space and size */
+    --xs: 0.4rem;
+    --sm: 1rem;
+}
+
+/* Globally set font, box-size; reset margin / paddings */
+* {
+    font-family: 'Nunito Sans', sans-serif;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    color: var(--dark-grey);
+    /* scrollbar-width: thin; */
+    /* scrollbar-color: red orange; */
+}
+*::-webkit-scrollbar {
+    /* CSS variable doesn't wrok here */
+    width: 1rem;
+}
+*::-webkit-scrollbar-track {
+    background: --clear;
+}
+*::-webkit-scrollbar-corner {
+    /* Disable the bottom right corner */
+    display: none;
+}
+*::-webkit-scrollbar-thumb {
+    background-color: var(--grey);
+    border-radius: 99px;
+    border: 4px solid transparent;
+    background-clip: content-box;
+}
+
+html {
+    font-size: 16px; /* Define rem as 16px */
+}
+
+p {
+    margin: 0.6rem 0;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+header .description {
+    width: 70%;
+    padding-right: 1rem;
+}
+/* Table screen */
+@media screen and (max-width: 690px) {
+    header {
+        flex-direction: column;
+    }
+    header .description {
+        width: 100%;
+    }
+}
+header .description .title {
+    margin-bottom: var(--sm);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+@media screen and (max-width: 440px) {
+    /* header .description .title {
+        flex-direction: column;
+        align-items: flex-start;
+    } */
+    header .description .title h1 {
+        font-size: 1.4rem;
+    }
+}
+header .description .title img {
+    margin-right: var(--sm);
+}
+header .description sup.tag {
+    padding: 0.2rem 0.3rem 0.1rem;
+    font-size: 0.8rem;
+    font-style: italic;
+    font-weight: normal;
+    color: rgb(255, 255, 255);
+    background-color: #6e6e6e;
+    border-radius: 999px;
+}
+
+header aside {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+@media screen and (max-width: 690px) and (min-width: 360px) {
+    header aside {
+        flex-direction: row;
+    }
+}
+/* [More Info] and [Demo app code] buttons */
+header aside a {
+    margin: 0.4rem;
+    width: 180px;
+    padding: 0.4rem;
+    border-radius: 0.4rem;
+    text-align: center;
+    text-decoration: none;
+}
+
+main {
+    padding: 3rem;
+    min-height: calc(100vh - 10rem);
+    background: var(--light-grey) url('../assets/images/bg-waveline.png') no-repeat center
+        bottom;
+    background-size: 100%;
+}
+@media screen and (max-width: 360px) {
+    main {
+        padding: 1rem;
+    }
+}
+main > section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: 50vh;
+}
+
+/* *********************************** */
+/* Styles for Main Demo App Functions  */
+/* *********************************** */
+main > section #form {
+    display: flex;
+    margin-top: 2rem;
+    border: solid 1px var(--grey);
+    border-radius: 16px;
+    flex-direction: column;
+    align-items: center;
+    width: 80%;
+    background-color: var(--light-grey);
+}
+main > section #form textarea {
+    width: 100%;
+    padding: 1rem 1rem 3.2rem;
+    border: none;
+    overflow-y: scroll;
+    background-color: var(--light-grey);
+    font-size: 1rem;
+    resize: none;
+}
+
+@media screen and (max-width: 360px) {
+    main > section #form textarea {
+        margin-top: 2rem;
+    }
+}
+main > section textarea:focus {
+    outline: none;
+}
+main > section #form .textarea-methods {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    border-top: var(--grey) 1px solid;
+}
+main > section #form .textarea-methods.top {
+    border-top: none;
+    border-bottom: var(--grey) 1px solid;
+}
+main > section #form .textarea-methods.top .btn {
+    text-align: left;
+    text-decoration: underline;
+    color: #9f825a;
+    margin: 0.5rem 1rem;
+    cursor: pointer;
+}
+main > section #form .textarea-methods button {
+    min-width: 100px;
+}
+main > section #form .textarea-methods > * {
+    width: 30%;
+    text-align: center;
+}
+main > section #form .textarea-methods > *:nth-child(2) {
+    width: 50%;
+}
+@media screen and (max-width: 640px) {
+    main > section #form .textarea-methods {
+        flex-direction: column;
+        top: 1rem;
+        margin-bottom: 2rem;
+        border: none;
+    }
+    main > section #form .textarea-methods > * {
+        width: 100%;
+    }
+    main > section #form .textarea-methods > *:nth-child(2) {
+        width: 100%;
+    }
+}
+main > section #form .textarea-methods button {
+    margin: 0;
+    padding: 0;
+    border: none;
+    cursor: pointer;
+    color: var(--grey);
+    background: none;
+}
+main > section #form .textarea-methods small {
+    color: var(--grey);
+}
+main > section #form .textarea-methods button.green {
+    color: white;
+    background: var(--prim-green);
+    height: 40px;
+}
+
+#textSumResult {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    background-color: rgb(142, 175, 4, 0.05);
+    position: relative;
+    top: 1rem;
+    padding: 1rem;
+    border-radius: var(--sm);
+}
+
+@media screen and (max-width: 700px) {
+    main > section #form textarea {
+        width: 96%;
+    }
+    #textSumResult {
+        width: 96%;
+    }
+}
+
+#textSumResult h3 {
+    text-align: center;
+    border-bottom: 1px solid var(--prim-green);
+    padding-bottom: 1rem;
+    color: var(--prim-green);
+}
+
+/* -END- Styles for Main Demo App Functions  */
+/* ***************************************** */
+
+/** 
+* All direct child of main and footer element 
+* Set the max content witdh.
+*/
+.all-demo-apps button {
+    margin: auto;
+    border: none;
+    background: none;
+}
+.all-demo-apps {
+    text-decoration: none;
+}
+
+.loader {
+    display: none; /** Set to none by default */
+    justify-content: center;
+    align-items: center;
+
+    overflow: hidden;
+
+    width: 100vw;
+    min-height: 100vh;
+    height: 100%;
+    top: 0;
+    position: fixed;
+    background-color: rgba(255, 255, 2555, 0.6);
+    z-index: 999;
+}
+.loader img {
+    width: 200px;
+}
+
+main > *,
+footer section {
+    max-width: 1200px;
+    margin: auto;
+}
+
+footer {
+    padding: 0 3rem;
+    box-shadow: 0 0rem 1rem rgba(0, 0, 0, 0.1);
+    background: white;
+}
+@media screen and (max-width: 360px) {
+    footer {
+        padding: 0 1rem;
+    }
+}
+footer section {
+    height: 100%;
+    min-height: 10rem;
+    padding: 2rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+@media screen and (max-width: 690px) {
+    footer section {
+        flex-direction: column;
+    }
+}
+footer section address {
+    font-style: normal;
+}
+footer .logo {
+    max-width: 260px;
+}
+footer a {
+    color: var(--beige);
+}
+footer a:hover {
+    filter: brightness(0.8);
+}
+
+/* Buttons */
+
+button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    min-width: 160px;
+    height: 48px;
+    margin: var(--xs);
+    padding: 0.6rem;
+    border-radius: 0.4rem;
+
+    font-size: 1rem;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+}
+button:focus {
+    outline: none;
+}
+button:hover {
+    filter: brightness(0.8);
+}
+button.green {
+    transition: all 0.3s;
+    border: none;
+    background-color: var(--prim-green);
+    color: white;
+}
+button.green:hover {
+    filter: brightness(1.1);
+}
+button.green:active {
+    filter: brightness(0.9);
+}
+button.green span {
+    color: white;
+}
+
+button.button-restart,
+button.button-restart span {
+    height: 40px;
+    border: none;
+    background-color: var(--beige) !important;
+    color: white !important;
+    padding: var(--xs);
+}
+button.button-restart span {
+    padding-right: 0px !important;
+}
+button.button-restart {
+    margin-top: 2rem;
+    max-width: 120px !important;
+}
+
+.more-info {
+    border: 1px solid var(--dark-grey);
+    background-color: var(--light-grey);
+}
+.more-info:hover {
+    filter: brightness(0.95);
+}
+
+.demo-app-code {
+    color: white;
+    border: 1px solid var(--dark-grey);
+    background-color: var(--dark-grey);
+}
+.demo-app-code:hover {
+    filter: brightness(1.3);
+}
+
+.hov-red:hover {
+    color: red;
+}
+
+.mr-sm {
+    margin-right: var(--sm);
+}
+
+.mr-xs {
+    margin-right: var(--xs);
+}
+
+.text-center {
+    text-align: center;
+}
