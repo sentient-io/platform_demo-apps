@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Fav Icon -->
+    <link
+      rel="icon"
+      type="image/svg"
+      href="assets/images/Sentient-io_fav.svg"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+      crossorigin="anonymous"
+    />
+
+    <!-- Load generic demoapp CSS style sheets -->
+    <link rel="stylesheet" href="assets/style.css" />
+
+    <!-- Import Google Material Icons -->
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+
+    <!-- jQuery(Google) first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+      integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+      crossorigin="anonymous"
+    ></script>
+
+    <title>Transcribe Conversation</title>
+
+    <!-- Demo app specific styles will be instered below -->
+    <style>
+      #modelDescription {
+        margin-top: 0.5rem;
+        text-align: center;
+        max-width: 460px;
+        width: 100%;
+        display: inline-block;
+        height: 42px;
+      }
+
+      #transcribeResults {
+        max-width: 500px;
+        width: 100%;
+        height: 50vh;
+        overflow: scroll;
+        background-color: white;
+        border-radius: 1rem;
+        padding: 1rem;
+        border: white solid 0.5rem;
+      }
+
+      #transcribeResults p {
+        display: inline-block;
+        border-radius: 0.75rem 0.75rem 0.75rem 0;
+        background-color: rgb(245, 245, 245);
+        padding: 1rem;
+        margin: 0.5rem 0;
+      }
+
+      #sampleRate {
+        margin-bottom: 1rem;
+      }
+
+      form {
+        align-items: center;
+      }
+
+      form p {
+        margin-bottom: 0.25rem;
+      }
+
+      @media screen and (max-width: 360px) {
+        h1 {
+          font-size: 1.5rem;
+          line-break: anywhere;
+        }
+      }
+
+      .tooltip-text span {
+        font-size: 1rem;
+        display: block;
+        margin: 0.5rem;
+        line-height: 1.2rem;
+      }
+
+      .speech-bubble-with-ellipsis:empty:before {
+        content: '...';
+        font-size: 3rem;
+        color: hsl(0, 0%, 80%);
+        line-height: 0px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <main class="fullscreen">
+      <!-- Header area contains demo app title, description and link buttons -->
+      <header>
+        <section>
+          <div class="title">
+            <img
+              src="assets/images/iconrealtimeconversationtranscriber.svg"
+              alt=""
+            />
+            <h1>
+              Transcribe Real-time Conversation<sup class="tag">DEMO</sup>
+            </h1>
+          </div>
+          <p>
+            This demo app transcribes English speech in real-time. User can
+            select the model best-suited for the transcription use-case.
+          </p>
+        </section>
+        <aside>
+          <a
+            href="https://platform.sentient.io/demoapps_detail/transcribe_conversation"
+            target="_blank"
+            class="btn"
+            >More Info</a
+          >
+          <a href="https://github.com/sentient-io/platform_demo-apps/tree/main/transcribe-real-time-conversion" target="_blank" class="btn filled">Demo App Code</a>
+        </aside>
+      </header>
+
+      <!-- Main demo app functions and content -->
+      <section class="appContainer" id="app">
+        <!-- <<app>> -->
+        <div id="appOptions" class="mb-sm flex column center">
+          <form oninput="selectModel()">
+            <p>Please Select Model:</p>
+            <select id="modelSelector">
+              <option value="generic_en_vosk" selected>Standard</option>
+              <option value="en-SG">Prepared Speech (SG)</option>
+              <option value="en-SG-conversation">
+                Conversational Speech (SG)
+              </option>
+              <option value="en-SG-telephony">Telephony (SG)</option>
+            </select>
+          </form>
+
+          <small>
+            <i id="modelDescription">
+              Better suited for generic / broad usage across different accents.
+            </i>
+          </small>
+
+          <form oninput="selectSampleRate()" id="sampleRate">
+            <p class="ma-none">Sample Rate:</p>
+            <span>
+              <input
+                type="radio"
+                id="sampleRate16k"
+                value="16000"
+                name="sampleRate"
+                checked
+              />
+              <label for="sampleRate16k">16kHz</label>
+            </span>
+            <span>
+              <input
+                type="radio"
+                id="sampleRate8k"
+                value="8000"
+                name="sampleRate"
+              />
+              <label for="sampleRate8k">8kHz</label>
+            </span>
+          </form>
+
+          <form oninput="selectProcessFrequency()">
+            <p class="ma-none">Time buffer:</p>
+            <select id="processFrequencySelector">
+              <option value="0.1">0.1s</option>
+              <option value="0.25" selected>0.25s</option>
+              <option value="0.5">0.5s</option>
+              <option value="0.75">0.75s</option>
+              <option value="1">1s</option>
+              <!-- 
+                            We have disabled the 1.5s and 2s below as they taking 
+                            longer time to response, feel free to try them!
+                        -->
+              <!-- <option value="1.5">1.5s</option> -->
+              <!-- <option value="2">2s</option> -->
+            </select>
+            <span class="material-icons tooltip"
+              >info_outline
+              <p class="tooltip-text">
+                <span>
+                  This is the interval of the browser sending data over to the
+                  API.
+                </span>
+
+                <span>
+                  A bigger value to result in longer perceived latency in user
+                  experience. A smaller value would result in higher processing
+                  overhead of the browser, as well as the possibility of longer
+                  words not processed accurately because the byte stream has
+                  been sent before the word is fully enunciated.
+                </span>
+                <span> We would recommend the default value of 0.25s. </span>
+              </p>
+            </span>
+          </form>
+
+          <p class="mt-lg">
+            To start, click the button below and
+            <b>allow browser to use your microphone</b>.
+          </p>
+
+          <button
+            class="btn filled green ml-auto"
+            onclick="startTranscribing()"
+          >
+            <span class="material-icons"> question_answer </span>
+            Start Transcribing
+          </button>
+        </div>
+
+        <div id="transcribeResultsContainer" style="display: none">
+          <p class="quote green flex center">
+            <span class="material-icons mr-xs">done_all</span>
+            Ready, please start talking to see the transcription result.
+          </p>
+          <div id="transcribeResults"></div>
+
+          <div class="flex row between">
+            <button
+              id="pauseButton"
+              onclick="pauseRecording()"
+              class="btn icon no-background no-border"
+            >
+              <span class="material-icons mr-xs"> pause </span>
+              Pause
+            </button>
+            <button
+              id="resumeButton"
+              class="btn icon no-background no-border"
+              style="display: none"
+              onclick="startRecording()"
+            >
+              <span class="material-icons mr-xs"> play_arrow </span>
+              Resume
+            </button>
+
+            <button
+              class="btn icon no-background no-border"
+              onclick="clearnContentById('transcribeResults')"
+            >
+              <span class="material-icons mr-xs"> format_clear </span>
+              Clear Text
+            </button>
+          </div>
+        </div>
+
+        <button
+          class="btn"
+          onclick="reloadPage()"
+          id="restartBtn"
+          style="display: none"
+        >
+          Restart
+        </button>
+      </section>
+
+      <!-- Back button to all demo app -->
+      <a
+        class="flex row center no-border btn ml-auto"
+        target="_PARENT"
+        href="https://platform.sentient.io/demoapps"
+      >
+        <span class="material-icons"> keyboard_backspace </span>
+        All Demo Apps
+      </a>
+    </main>
+
+    <!-- Popup Alert -->
+    <div class="modal fade" id="alert" tabindex="-1" area-hidden="true">
+      <div class="modal-dialog d-flex" style="height: 100vh">
+        <div class="modal-content m-auto p-2">
+          <div class="modal-header d-flex justify-content-center">
+            <h5 class="modal-title" id="alertTitle"></h5>
+          </div>
+          <div class="modal-body p-3">
+            <p id="alertContent"></p>
+          </div>
+          <div class="modal-footer d-flex justify-content-center">
+            <button type="button" class="btn" data-dismiss="modal">
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- -END- Popup Alert -->
+
+    <!-- Loader -->
+    <div class="loader" id="loader">
+      <img src="assets/images/sentie-loader.gif" alt="" />
+    </div>
+
+    <!-- Footer contains copyright info, essential links -->
+    <footer>
+      <section>
+        <address>
+          <p>
+            Designed and built by
+            <a href="https://www.sentient.io/" target="_top">Sentient.io</a>
+            with the help of our contributors.
+          </p>
+          <p>App version: 3.1.1</p>
+        </address>
+        <a href="https://www.sentient.io/" target="_top">
+          <img
+            src="assets/images/sentient-logo.png"
+            alt="Sentient.io logo"
+            class="logo"
+          />
+        </a>
+      </section>
+    </footer>
+  </body>
+
+  <!-- <script>
+    /** Detect if this page is opened inside an iframe */
+    if (window.location !== window.parent.location) {
+      /** Hide header and footer */
+      ;['header', 'footer'].forEach((tag) => {
+        document
+          .getElementsByTagName(tag)[0]
+          .setAttribute('style', 'display:none')
+      })
+      /** Hide background */
+      document.getElementsByTagName('main')[0].setAttribute('class', 'iframe')
+    }
+  </script> -->
+
+  <script src="https://www.WebRTC-Experiment.com/RecordRTC.js"></script>
+  <script src="./config.js"></script>
+  <script src="functions/eventListeners.js"></script>
+  <script src="functions/dataModifiers.js"></script>
+  <script src="functions/apiCalls.js"></script>
+</html>

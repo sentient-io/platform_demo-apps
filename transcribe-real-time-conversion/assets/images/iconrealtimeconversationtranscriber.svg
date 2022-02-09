@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="55.586" height="55.586" viewBox="0 0 55.586 55.586">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.214" y1="0.141" x2="0.737" y2="0.8" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#f44336"/>
+      <stop offset="1" stop-color="#a00202"/>
+    </linearGradient>
+  </defs>
+  <g id="icon_real-time-conversation-transcriber" transform="translate(-24.207 -17.843)">
+    <rect id="Rectangle_990" data-name="Rectangle 990" width="55.586" height="55.586" rx="6" transform="translate(24.207 17.843)" fill="url(#linear-gradient)"/>
+    <g id="Group_2" data-name="Group 2" transform="translate(-7.279 27.193)">
+      <line id="Line_4" data-name="Line 4" x2="13.954" transform="translate(57.443 16.607)" fill="none" stroke="#fff" stroke-miterlimit="10" stroke-width="1.909"/>
+      <line id="Line_5" data-name="Line 5" x2="13.954" transform="translate(57.443 23.768)" fill="none" stroke="#fff" stroke-miterlimit="10" stroke-width="1.909"/>
+      <path id="Path_3" data-name="Path 3" d="M73.793,12.677V31.956l-5.325-5.325H52.677a6.9,6.9,0,0,1-6.794-5.325,5.66,5.66,0,0,1-.184-1.836V12.677A6.974,6.974,0,0,1,52.677,5.7H66.632A7.133,7.133,0,0,1,73.793,12.677Z" transform="translate(4.766 3.93)" fill="none" stroke="#fff" stroke-miterlimit="10" stroke-width="1.909"/>
+      <path id="Path_4" data-name="Path 4" d="M67.909,7.977V9.813H57.443a6.974,6.974,0,0,0-6.977,6.977v5.325H45.141L40,27.256V7.977A6.974,6.974,0,0,1,46.977,1H60.932A6.974,6.974,0,0,1,67.909,7.977Z" fill="none" stroke="#fff" stroke-miterlimit="10" stroke-width="1.909"/>
+    </g>
+  </g>
+</svg>
