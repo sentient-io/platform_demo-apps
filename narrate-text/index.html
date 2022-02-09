@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Narrate Text</title>
+    <!-- Fav Icon -->
+    <link
+      rel="icon"
+      type="image/svg"
+      href="assets/images/Sentient-io_fav.svg"
+    />
+    <!-- Load generic demoapp CSS style sheets -->
+    <link rel="stylesheet" href="assets/style.css" />
+
+    <!-- Demo app specific styles will be instered below -->
+    <style>
+      #app-options,
+      #app-result {
+        max-width: 800px;
+        width: 100%;
+        margin: 0 auto;
+      }
+
+      textarea {
+        width: 100%;
+      }
+
+      #app-inputs {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .btn.icon {
+        width: 200px;
+      }
+
+      audio {
+        width: 100%;
+        max-width: 450px;
+      }
+
+      audio::-webkit-media-controls-panel {
+        background-color: white;
+      }
+
+      #app-inputs {
+        max-width: 800px;
+        width: 100%;
+      }
+
+      @media screen and (max-width: 450px) {
+        #pitchAndTempoSliders {
+          flex-wrap: nowrap;
+          flex-direction: column;
+        }
+      }
+
+      @media screen and (max-width: 675px) {
+        #useProvidedTextForm {
+          margin: 1rem 0;
+        }
+      }
+    </style>
+    <!-- Google Material Icons -->
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <main class="fullscreen">
+      <div id="loader" style="display: none">
+        <div class="s-full-screen-loader">
+          <img
+            src="assets/images/sentie-loader.gif"
+            width="180px"
+            height="auto"
+            alt=""
+          />
+          <p>Processing ...</p>
+        </div>
+      </div>
+
+      <!-- Header area contains demo app title, description and link buttons -->
+      <header>
+        <section>
+          <div class="title">
+            <img src="assets/images/iconnarratetext.svg" alt="" />
+            <h1>Narrate Text<sup class="tag">DEMO</sup></h1>
+          </div>
+          <p>
+            This demo app narrates written English, Japanese or Mandarin text in
+            a female voice. User can choose between English, Japanese or
+            Mandarin speech synthesis, each powered by separate microservices.
+          </p>
+        </section>
+        <aside>
+          <a
+            href="https://platform.sentient.io/demoapps_detail/narrate_text"
+            target="_blank"
+            class="btn"
+            >More Info</a
+          >
+          <a href="https://github.com/sentient-io/platform_demo-apps/tree/main/narrate-text" target="_blank" class="btn filled">Demo App Code</a>
+        </aside>
+      </header>
+      <!-- Main demo app functions and content -->
+
+      <section class="app-container" id="app">
+        <div id="app-options">
+          <div class="flex row between">
+            <form
+              oninput="selectLang()"
+              id="langSelector"
+              class="flex row start"
+            >
+              <p>Please select language:</p>
+
+              <div class="flex row start">
+                <span>
+                  <input
+                    type="radio"
+                    id="lang-english"
+                    value="english"
+                    name="language"
+                    checked
+                  />
+                  <label for="lang-english">English</label>
+                </span>
+                <span>
+                  <input
+                    type="radio"
+                    id="lang-japanese"
+                    value="japanese"
+                    name="language"
+                  />
+                  <label for="lang-japanese">日本語</label>
+                </span>
+                <span>
+                  <input
+                    type="radio"
+                    id="lang-mandarin"
+                    value="mandarin"
+                    name="language"
+                  />
+                  <label for="lang-mandarin">中文</label>
+                </span>
+              </div>
+            </form>
+
+            <div id="useProvidedTextForm">
+              <form
+                oninput="toggleUseProvidedTextState()"
+                class="flex row start"
+              >
+                <label for="useProvidedText">Use sample text: </label>
+                <input
+                  type="checkbox"
+                  style="width: 1.2rem; height: 1.2rem"
+                  checked
+                  id="useProvidedText"
+                />
+              </form>
+            </div>
+          </div>
+
+          <div class="flex row between">
+            <form
+              oninput="selectModel()"
+              class="flex row start"
+              id="modelSelectorForm"
+            >
+              <div class="flex row start">
+                <p>Model:</p>
+                <select id="modelSelector">
+                  <option value="female_singaporean">Female Singaporean</option>
+                  <option value="female_generic">Female Generic</option>
+                </select>
+              </div>
+            </form>
+
+            <!-- Sliders for Pitch and Tempo, only display for female_singaporean model -->
+            <div class="flex row start nowrap" id="pitchAndTempoSliders">
+              <div class="flex row start nowrap">
+                <p>Pitch:</p>
+                <input
+                  oninput="updatePitchAndTempo('pitch')"
+                  type="range"
+                  min="0.75"
+                  max="1.25"
+                  value="1.0"
+                  step="0.1"
+                  id="pitch"
+                />
+                <p id="pitchVal" class="mr-sm" style="width: 25px">1</p>
+              </div>
+
+              <div class="flex row start nowrap">
+                <p>Tempo:</p>
+                <input
+                  oninput="updatePitchAndTempo('tempo')"
+                  type="range"
+                  min="0.75"
+                  max="1.25"
+                  value="1.0"
+                  step="0.1"
+                  id="tempo"
+                />
+                <p id="tempoVal" style="width: 25px">1</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="app-inputs">
+          <textarea
+            oninput="inputText(this.value)"
+            class="border"
+            name=""
+            id="inputText"
+            cols="30"
+            rows="6"
+            placeholder="Put some text here to convert to speech"
+            autocomplete="off"
+          ></textarea>
+
+          <div class="flex row between px-sm" id="userInputFunctions">
+            <div>
+              <small> Characters Limit: </small>
+              <small id="wordCount"> 0 / 2000 </small>
+            </div>
+            <small class="btn text" onclick="clearInputText()"
+              >Clear Text</small
+            >
+          </div>
+        </div>
+
+        <div id="app-result" class="flex column end" style="display: none">
+          <div class="flex column quote">
+            <div>
+              <h5 class="text-green">Narrating Result For:</h5>
+              <p id="appResultDescription">
+                <!-- English | Female Singaporean | Pitch: 1.5 | Tempo: 1.5 -->
+              </p>
+            </div>
+
+            <button
+              onclick="playPauseAudio()"
+              class="btn filled green icon flex row center"
+              id="playAudioButton"
+              style="display: none"
+            >
+              <span class="material-icons pr-xs">volume_up</span>
+              Play / Pause Audio
+            </button>
+
+            <audio src="null" id="audioResult" controls></audio>
+          </div>
+
+          <button class="btn" onclick="reloadPage()" id="btn-restart">
+            Restart
+          </button>
+        </div>
+
+        <div id="app-controls" class="flex row center">
+          <button
+            onclick="convertTextToSpeech()"
+            id="convertToSpeechBtn"
+            class="btn filled green icon flex row center"
+          >
+            Convert to Speech
+            <span class="material-icons pl-xs"> play_circle </span>
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer contains copyright info, essential links -->
+    <footer>
+      <section>
+        <address>
+          <p>
+            Designed and built by
+            <a href="https://www.sentient.io/" target="_top">Sentient.io</a>
+            with the help of our contributors.
+          </p>
+          <p>App version: 3.1.1</p>
+        </address>
+        <a href="https://www.sentient.io/" target="_top">
+          <img
+            src="assets/images/sentient-logo.png"
+            alt="Sentient.io logo"
+            class="logo"
+          />
+        </a>
+      </section>
+    </footer>
+  </body>
+
+  <!-- <script>
+    /** Detect if this page is opened inside an iframe */
+    if (window.location !== window.parent.location) {
+      /** Hide header and footer */
+      ;['header', 'footer'].forEach((tag) => {
+        document
+          .getElementsByTagName(tag)[0]
+          .setAttribute('style', 'display:none')
+      })
+      /** Hide background */
+      document.getElementsByTagName('main')[0].setAttribute('class', 'iframe')
+    }
+  </script> -->
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="config.js"></script>
+  <script src="functions/dataModifiers.js"></script>
+  <script src="functions/eventListeners.js"></script>
+  <script src="functions/apiCalls.js"></script>
+</html>
