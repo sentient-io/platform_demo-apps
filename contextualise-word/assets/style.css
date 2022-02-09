@@ -1,0 +1,413 @@
+/** v3.1.0 latest update 2021-Dec-13 */
+
+/* Import Nunito Sans font from google */
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap');
+
+:root {
+    /* Color valriables */
+    --green: #8eaf04;
+    --dark-grey: #424143;
+    --medium-grey: #8f8f8f;
+    --grey: #bdbdbd;
+    --light-grey: #f5f5f5;
+    --beige: #cbac81;
+    --light-beige: #e4cba8;
+    --transparent: rgba(0, 0, 0, 0);
+    --transparent-white: rgba(255, 255, 255, 0.5);
+
+    /* Space and size */
+    --xs: 0.5rem;
+    --sm: 1rem;
+    --md: 2rem;
+    --lg: 3rem;
+    --xl: 4rem;
+    --xxl: 5rem;
+}
+
+/* 
+Globally set font, box-size; reset margin / paddings 
+Escape fonts for google material icons
+*/
+*:not(.material-icons) {
+    font-family: 'Nunito Sans', sans-serif;
+    box-sizing: border-box;
+}
+
+*::-webkit-scrollbar {
+    /* CSS variable doesn't wrok here */
+    width: 1rem;
+}
+*::-webkit-scrollbar-track {
+    background: --clear;
+}
+*::-webkit-scrollbar-corner {
+    /* Disable the bottom right corner */
+    display: none;
+}
+*::-webkit-scrollbar-thumb {
+    background-color: var(--grey);
+    border-radius: 99px;
+    border: 4px solid transparent;
+    background-clip: content-box;
+}
+
+html,
+button,
+textarea {
+    font-size: 16px; /* Define rem as 16px */
+}
+h5 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+body {
+    margin: 0;
+    padding: 0;
+}
+
+main.fullscreen {
+    min-height: 100vh;
+    padding: var(--md);
+    height: 100%;
+    background: var(--light-grey) url('../assets/images/bg-waveline.png') no-repeat center
+        bottom;
+    background-size: 100%;
+    display: flex;
+    flex-direction: column;
+}
+main.iframe {
+    /** Important to keep below value consitant, for iframe dispaly purpose */
+    min-height: 650px;
+    height: clac(100vh - 200px);
+}
+header {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+@media screen and (max-width: 640px) {
+    header {
+        flex-direction: column;
+    }
+    header > section {
+        margin-right: 0 !important;
+    }
+}
+header > section {
+    margin-right: var(--md);
+}
+header section .title {
+    margin-bottom: var(--sm);
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+header sup {
+    padding: 0.25rem 0.4rem 0.2rem;
+    margin: var(--xs);
+    font-size: 0.8rem;
+    font-style: italic;
+    font-weight: normal;
+    color: white;
+    background-color: var(--medium-grey);
+    border-radius: 999px;
+}
+header aside {
+    display: flex;
+    flex-direction: column;
+}
+@media screen and (max-width: 640px) {
+    header aside {
+        flex-direction: row;
+    }
+}
+@media screen and (max-width: 420px) {
+    header aside {
+        flex-direction: column;
+    }
+}
+section.app-container {
+    max-width: 1200px;
+    width: 100%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    align-self: center;
+    /** Important to keep below value consitant, for iframe dispaly purpose */
+    min-height: 650px;
+    height: clac(100vh - 200px);
+}
+
+a,
+a:hover {
+	text-decoration: none;
+	color: #424242;
+}
+
+
+h1 {
+    font-size: var(--md);
+    margin: var(--sm);
+}
+
+footer section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--sm) var(--xxl);
+    height: 100%;
+}
+@media screen and (max-width: 640px) {
+    footer section {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+footer .logo {
+    max-width: 260px;
+}
+
+input[type='radio'] {
+    border: 0px;
+    width: 1.5rem;
+    height: 1.5rem;
+    margin: 0 0.5rem 0 1rem;
+}
+
+*:focus-visible {
+    outline: none;
+}
+
+textarea {
+    width: 100%!important;
+    border: none;
+    border-radius: 4px;
+    height: 250px;
+}
+textarea:focus{
+    outline: none;
+    border: none;
+    }
+.text-box{
+    min-height: 328px;
+    padding: 3rem 2rem 4rem 2rem;
+    box-shadow: 0px 0px 3px 0px rgb(212, 213, 213);
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: #fff;
+}
+.text-box:focus{    
+    outline: none !important;
+    border: 1px solid #cacacb!important;
+    -webkit-box-shadow: 0px 0px 35px -9px rgb(26, 26, 26);
+    -moz-box-shadow: 0px 0px 35px -9px rgb(164, 223, 152);
+    box-shadow: 0px 2px 6px 2px rgba(135, 135, 135, 0.21);
+}
+.material-icons {
+	transition: all 0s;
+    position: relative;
+    top: 5px;
+    right: 0px;
+
+}
+
+.btn {
+    display: inline-block;
+    padding: var(--xs);
+    margin: var(--xs);
+    min-width: 180px;
+    border: 1px solid;
+    border-radius: var(--xs);
+    text-align: center;
+    text-decoration: none;
+    color: var(--dark-grey);
+    cursor: pointer;
+}
+.btn:hover:not(:disabled) {
+    filter: brightness(1.2);
+}
+
+.btn.cancel {
+	border: none;
+	background-color: rgba(0, 0, 0, 0);
+	color: #9e9e9e;
+}
+
+.btn.cancel:hover {
+	color: #424242;
+}
+
+.btn.filled {
+    color: white;
+    background-color: var(--dark-grey);
+}
+.btn.filled.green {
+    background-color: var(--green);
+    border-color: var(--green);
+}
+.btn.filled.beige {
+    background-color: var(--beige);
+    border-color: var(--beige);
+}
+.btn.filled.grey {
+    background-color: var(--medium-grey);
+    border-color: var(--medium-grey);
+    width: 210px;
+}
+
+.btn.text {
+    padding: 0;
+    width: auto;
+    border: none;
+    text-decoration: underline;
+}
+.btn:disabled,
+textarea:disabled {
+    cursor: not-allowed;
+    filter: saturate(0);
+}
+
+.flex {
+    display: flex;
+}
+.flex.row {
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.flex.row.nowrap {
+    flex-wrap: nowrap;
+}
+.flex.column {
+    flex-direction: column;
+}
+.flex.column.center {
+    align-items: center;
+}
+.flex.column.end {
+    align-items: flex-end;
+}
+
+.flex.center {
+    justify-content: center;
+}
+.flex.start {
+    justify-content: flex-start;
+}
+
+.flex.between {
+    justify-content: space-between;
+}
+
+.block {
+    display: block;
+}
+
+.border {
+    border: 1px solid var(--dark-grey);
+}
+
+.quote {
+    border-left: 6px solid;
+    border-right: 6px solid;
+    background-color: white;
+    border-radius: 8px;
+    padding: var(--sm);
+    border-color: var(--green);
+    width: 100%;
+}
+
+/** Paddings */
+.px-xs {
+    padding: 0 var(--xs);
+}
+.px-sm {
+    padding: 0 var(--sm);
+}
+
+.pl-xs {
+    padding-left: var(--xs);
+}
+
+.pr-xs {
+    padding-right: var(--xs);
+}
+
+.pr-sm {
+    padding-right: var(--sm);
+}
+
+/** Margins */
+.mr-sm {
+    margin-right: var(--sm);
+}
+.mr-xs {
+    margin-right: var(--xs);
+}
+
+.ml-sm {
+    margin-left: var(--sm);
+}
+
+.mb-md {
+    margin-bottom: var(--md);
+}
+
+
+/** Text Colors */
+.text-green {
+    color: var(--green);
+}
+
+.text-beige {
+    color: var(--beige);
+}
+
+/* +--------------------+ */
+/* | Full Screen Loader | */
+/* +--------------------+ */
+.s-full-screen-loader {
+    display: none; /** Set to none by default */
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    width: 100vw;
+    min-height: 100vh;
+    height: 100%;
+    top: 0;
+    position: fixed;
+    background-color: #f5f5f599;
+    z-index: 999;
+}
+
+.s-full-screen-loader img {
+    width: 200px;
+}
+
+/* +--------------------+ */
+/* | Full Screen Loader | */
+/* +--------------------+ */
+.s-full-screen-loader {
+    display: none; /** Set to none by default */
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    width: 100vw;
+    min-height: 100vh;
+    height: 100%;
+    top: 0;
+    position: fixed;
+    background-color: #f5f5f599;
+    z-index: 999;
+}
+
+.s-full-screen-loader img {
+    width: 200px;
+}
