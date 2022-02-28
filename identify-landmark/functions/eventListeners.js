@@ -202,13 +202,22 @@ function fetchApiKeyFromSessionStorage() {
 	const k = window.sessionStorage.getItem('sentientApiKey')
 	state.userApiKey = k
 }
-fetchApiKeyFromSessionStorage()
+/**
+ * Detect if the demo app is running locally, if so, use session storage store
+ * api key for developing convence.
+ * */
+ if (
+  location.hostname === 'localhost' ||
+  location.hostname === '127.0.0.1' ||
+  location.hostname === ''
+) {
+  fetchApiKeyFromSessionStorage()
+}
 
 function showPop(element) {
 	loadingStart()
 	wikipediaRetrievalAPICall(state.landmark)
 		.then((response) => {
-			console.log(response)
 			if (
 				response.results != undefined &&
 				response.results.summary != undefined

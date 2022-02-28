@@ -1,395 +1,430 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
 
     <!-- Fav Icon -->
-    <link rel="icon" type="image/svg" href="assets/images/Sentient-io_fav.svg" />
+    <link
+      rel="icon"
+      type="image/svg"
+      href="assets/images/Sentient-io_fav.svg"
+    />
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+      crossorigin="anonymous"
+    />
 
     <!-- Load generic demoapp CSS style sheets -->
-    <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="assets/style.css" />
 
     <!-- Import Google Material Icons -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
 
     <!-- jQuery(Google) first, then Popper.js, then Bootstrap JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
-        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
-        crossorigin="anonymous"></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+      integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+      crossorigin="anonymous"
+    ></script>
 
     <title>Transcribe Speech</title>
 
     <!-- Demo app specific styles will be instered below -->
     <style>
-        main>section {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-        }
+      main > section {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+      }
 
-        main>section form {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-        }
+      main > section form {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+      }
 
-        main>section form input {
-            width: 1.4rem;
-            height: 1.4rem;
-            margin: 0 var(--xs);
-        }
+      main > section form input {
+        width: 1.4rem;
+        height: 1.4rem;
+        margin: 0 var(--xs);
+      }
 
+      #langSelectorSection {
+        margin-top: 5rem !important;
+      }
+
+      #langSelectorSection,
+      #modelSelectorSection {
+        width: 440px;
+        margin: 0.6rem 0;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        flex-wrap: wrap;
+        justify-content: space-between;
+      }
+
+      @media screen and (max-width: 440px) {
         #langSelectorSection {
-            margin-top: 5rem !important;
+          margin-top: 2rem !important;
         }
 
         #langSelectorSection,
         #modelSelectorSection {
-            width: 440px;
-            margin: 0.6rem 0;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            flex-wrap: wrap;
-            justify-content: space-between;
+          width: 100%;
+          flex-direction: column;
         }
+      }
 
-        @media screen and (max-width: 440px) {
-            #langSelectorSection {
-                margin-top: 2rem !important;
-            }
+      #langSelectorSection p,
+      #modelSelectorSection label {
+        text-align: center;
+        margin: var(--sm) 0;
+      }
 
-            #langSelectorSection,
-            #modelSelectorSection {
-                width: 100%;
-                flex-direction: column;
-            }
-        }
+      #modelSelectorSection select {
+        font-size: 1rem;
+        outline: var(--dark-grey);
+        /** Override browser default style */
+      }
 
-        #langSelectorSection p,
-        #modelSelectorSection label {
-            text-align: center;
-            margin: var(--sm) 0;
-        }
+      #modelSelectorSection small {
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        color: var(--medium-grey);
+        text-align: center;
+        font-style: italic;
+      }
 
-        #modelSelectorSection select {
-            font-size: 1rem;
-            outline: var(--dark-grey);
-            /** Override browser default style */
-        }
+      #startRecordingSection {
+        margin-top: 2rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
 
-        #modelSelectorSection small {
-            padding: 0;
-            margin: 0;
-            width: 100%;
-            color: var(--medium-grey);
-            text-align: center;
-            font-style: italic;
-        }
+      #transResultSection {
+        display: flex;
+        flex-direction: column-reverse;
+        width: 100%;
+        max-width: 600px;
+        height: 27vh;
+        margin-top: 2rem;
+        padding: 0 var(--xs);
+        overflow-y: scroll;
+      }
 
-        #startRecordingSection {
-            margin-top: 2rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
+      @media screen and (max-width: 440px) {
         #transResultSection {
-            display: flex;
-            flex-direction: column-reverse;
-            width: 100%;
-            max-width: 600px;
-            height: 27vh;
-            margin-top: 2rem;
-            padding: 0 var(--xs);
-            overflow-y: scroll;
+          height: 37vh;
+        }
+      }
+
+      #transResultSection div {
+        display: flex;
+        flex-direction: row;
+        align-items: stretch;
+        margin-bottom: var(--xs);
+        background-color: var(--transparent-white);
+        box-shadow: 0.2rem 0.2rem 0.2rem rgba(0, 0, 0, 0.1);
+      }
+
+      #transResultSection div span {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 0.5rem;
+        color: white;
+        background-color: var(--light-beige);
+      }
+
+      #transResultSection div p {
+        margin: 0.5rem 1rem;
+      }
+
+      #transResultSection .loader {
+        position: relative;
+        flex-direction: row-reverse;
+        justify-content: space-between;
+        display: flex;
+
+        width: 130px;
+        margin: var(--xs) auto;
+        box-shadow: none;
+
+        background: url(./assets/images/loading.gif) no-repeat left center;
+        background-size: 1.4rem;
+        text-align: center;
+      }
+
+      #transResultSection .loader::after {
+        content: 'Transcribing ...';
+      }
+
+      #voiceRecorderSection {
+        margin-top: 2rem;
+        flex-direction: column;
+        align-items: center;
+
+        -webkit-touch-callout: none;
+        /* iOS Safari */
+        -webkit-user-select: none;
+        /* Safari */
+        -khtml-user-select: none;
+        /* Konqueror HTML */
+        -moz-user-select: none;
+        /* Old versions of Firefox */
+        -ms-user-select: none;
+        /* Internet Explorer/Edge */
+        user-select: none;
+      }
+
+      #voiceRecorderSection button.green {
+        width: 5rem;
+        height: 5rem;
+        margin: 0.5rem;
+        border-radius: 999px;
+      }
+
+      @keyframes circleBaseBounce {
+        0% {
+          width: 5rem;
+          height: 5rem;
+          margin: 0.5rem;
         }
 
-        @media screen and (max-width: 440px) {
-            #transResultSection {
-                height: 37vh;
-            }
+        50% {
+          width: 6rem;
+          height: 6rem;
+          margin: 0rem;
         }
 
-        #transResultSection div {
-            display: flex;
-            flex-direction: row;
-            align-items: stretch;
-            margin-bottom: var(--xs);
-            background-color: var(--transparent-white);
-            box-shadow: 0.2rem 0.2rem 0.2rem rgba(0, 0, 0, 0.1);
+        100% {
+          width: 5rem;
+          height: 5rem;
+          margin: 0.5rem;
+        }
+      }
+
+      #voiceRecorderSection button.green:active {
+        animation: circleBaseBounce 2s ease-out infinite;
+      }
+
+      @keyframes circleInnerBounce {
+        0% {
+          padding: 0.6rem;
+          font-size: 2.5rem;
         }
 
-        #transResultSection div span {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 0.5rem;
-            color: white;
-            background-color: var(--light-beige);
+        50% {
+          padding: 1.05rem;
+          font-size: 2.8rem;
         }
 
-        #transResultSection div p {
-            margin: 0.5rem 1rem;
+        100% {
+          padding: 0.6rem;
+          font-size: 2.5rem;
         }
+      }
 
-        #transResultSection .loader {
-            position: relative;
-            flex-direction: row-reverse;
-            justify-content: space-between;
-            display: flex;
+      #voiceRecorderSection button.green:active span {
+        animation: circleInnerBounce 2s ease-out infinite;
+      }
 
-            width: 130px;
-            margin: var(--xs) auto;
-            box-shadow: none;
-
-            background: url(./assets/images/loading.gif) no-repeat left center;
-            background-size: 1.4rem;
-            text-align: center;
-        }
-
-        #transResultSection .loader::after {
-            content: 'Transcribing ...';
-        }
-
-        #voiceRecorderSection {
-            margin-top: 2rem;
-            flex-direction: column;
-            align-items: center;
-
-            -webkit-touch-callout: none;
-            /* iOS Safari */
-            -webkit-user-select: none;
-            /* Safari */
-            -khtml-user-select: none;
-            /* Konqueror HTML */
-            -moz-user-select: none;
-            /* Old versions of Firefox */
-            -ms-user-select: none;
-            /* Internet Explorer/Edge */
-            user-select: none;
-        }
-
-        #voiceRecorderSection button.green {
-            width: 5rem;
-            height: 5rem;
-            margin: 0.5rem;
-            border-radius: 999px;
-        }
-
-        @keyframes circleBaseBounce {
-            0% {
-                width: 5rem;
-                height: 5rem;
-                margin: 0.5rem;
-            }
-
-            50% {
-                width: 6rem;
-                height: 6rem;
-                margin: 0rem;
-            }
-
-            100% {
-                width: 5rem;
-                height: 5rem;
-                margin: 0.5rem;
-            }
-        }
-
-        #voiceRecorderSection button.green:active {
-            animation: circleBaseBounce 2s ease-out infinite;
-        }
-
-        @keyframes circleInnerBounce {
-            0% {
-                padding: 0.6rem;
-                font-size: 2.5rem;
-            }
-
-            50% {
-                padding: 1.05rem;
-                font-size: 2.8rem;
-            }
-
-            100% {
-                padding: 0.6rem;
-                font-size: 2.5rem;
-            }
-        }
-
-        #voiceRecorderSection button.green:active span {
-            animation: circleInnerBounce 2s ease-out infinite;
-        }
-
-        #voiceRecorderSection button.green span {
-            padding: 0.6rem;
-            border-radius: 999px;
-            border: white 2px solid;
-            color: white;
-            font-size: 2.5rem;
-        }
+      #voiceRecorderSection button.green span {
+        padding: 0.6rem;
+        border-radius: 999px;
+        border: white 2px solid;
+        color: white;
+        font-size: 2.5rem;
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <main class="fullscreen">
+      <!-- Header area contains demo app title, description and link buttons -->
+      <header>
+        <section>
+          <div class="title">
+            <img src="assets/images/icontranscribespeech.svg" alt="" />
+            <h1>Transcribe Speech<sup class="tag">DEMO</sup></h1>
+          </div>
+          <p>
+            This demo app transcribes spoken English and Mandarin into text.
+            User can further select the specific transcription model based on
+            the use-case or accent for English input.
+          </p>
+        </section>
+        <aside>
+          <a
+            href="https://platform.sentient.io/demoapps_detail/transcribe_speech"
+            target="_blank"
+            class="btn"
+            >More Info</a
+          >
+          <a
+            href="https://github.com/sentient-io/platform_demo-apps/tree/main/transcribe-speech"
+            target="_blank"
+            class="btn filled"
+            >Demo App Code</a
+          >
+        </aside>
+      </header>
 
-        <!-- Header area contains demo app title, description and link buttons -->
-        <header>
-            <section>
-                <div class="title">
-                    <img src="assets/images/icontranscribespeech.svg" alt="">
-                    <h1>Transcribe Speech<sup class="tag">DEMO</sup> </h1>
-                </div>
-                <p>
-                    This demo app transcribes spoken English and Mandarin into text. User can further select the
-                    specific transcription model based on the use-case or accent for English input.
-                </p>
-            </section>
-            <aside>
-                <a href="https://platform.sentient.io/demoapps_detail/transcribe_speech" target="_blank"
-                    class="btn">More Info</a>
-                <a href="https://github.com/sentient-io/platform_demo-apps/tree/main/transcribe-speech" target="_blank" class="btn filled">Demo App Code</a>
-            </aside>
-        </header>
+      <!-- Main demo app functions and content -->
+      <section style="min-height: 30vh">
+        <div id="langSelectorSection">
+          <p>Please select language:</p>
+          <form onsubmit="return false" id="languageSelector">
+            <input
+              type="radio"
+              id="english"
+              name="language"
+              value="english"
+              checked
+            />
+            <label for="english" class="mr-sm">English</label>
+            <input
+              type="radio"
+              id="mandarin"
+              name="language"
+              value="mandarin"
+            />
+            <label for="mandarin">Mandarin</label>
+          </form>
+        </div>
 
-        <!-- Main demo app functions and content -->
-        <section style="min-height: 30vh;">
-            <div id="langSelectorSection">
-                <p>Please select language:</p>
-                <form onsubmit="return false" id='languageSelector'>
-                    <input type="radio" id="english" name="language" value="english" checked>
-                    <label for="english" class="mr-sm">English</label>
-                    <input type="radio" id="mandarin" name="language" value="mandarin">
-                    <label for="mandarin">Mandarin</label>
-                </form>
-            </div>
+        <div id="modelSelectorSection">
+          <!-- <form onsubmit="return false"> -->
+          <label for="model">Please select English ASR model:</label>
+          <select name="model" id="modelSelector">
+            <option value="generic" selected>Generic</option>
+            <option value="prepared_speech">Prepared Speech (SG)</option>
+            <option value="telephony">Telephony(SG)</option>
+          </select>
+          <!-- </form> -->
+          <small id="modelDescription">
+            Large nnet3-chain factorized TDNN model, trained on ~1200 hours of
+            audio. Generic English, 16KHz
+          </small>
+        </div>
 
-            <div id="modelSelectorSection">
-                <!-- <form onsubmit="return false"> -->
-                <label for="model">Please select English ASR model:</label>
-                <select name="model" id="modelSelector">
-                    <option value="generic" selected>Generic</option>
-                    <option value="prepared_speech">Prepared Speech (SG)</option>
-                    <option value="telephony">Telephony(SG)</option>
-                </select>
-                <!-- </form> -->
-                <small id="modelDescription">
-                    Large nnet3-chain factorized TDNN model, trained on ~1200 hours of
-                    audio. Generic English, 16KHz
-                </small>
-            </div>
+        <div id="startRecordingSection">
+          <p>
+            To start, click the button below and
+            <strong> allow browser to use your microphone</strong>
+            .
+          </p>
+          <button
+            class="btn filled green"
+            onclick="userAction.startTranscribe()"
+          >
+            <span class="material-icons mt-sm mr-sm"> record_voice_over </span>
+            Start
+          </button>
+        </div>
 
-            <div id="startRecordingSection">
-                <p>To start, click the button below and
-                    <strong> allow browser to use your microphone</strong>
-                    .
-                </p>
-                <button class="btn filled green" onclick="userAction.startTranscribe()">
-                    <span class="material-icons mt-sm mr-sm">
-                        record_voice_over
-                    </span>
-                    Start
-                </button>
-            </div>
-
-            <div id="transResultSection" style="display: none;">
-                <!-- 
+        <div id="transResultSection" style="display: none">
+          <!-- 
                     Each items inside transResultSection will have below html tags:
                     <div> 
                     <span>1.</span>
                     <p>some transcription results</p>
                     </div>
                 -->
-                <!-- 
+          <!-- 
                     Loader icon before transcription result been rendered
                     <div class="loader"></div>    
                 -->
-            </div>
+        </div>
 
-            <div id="voiceRecorderSection" style="display: none;">
-                <button id="voiceRecorderButton" class="btn filled green" onmousedown="userAction.recordAudio()"
-                    ontouchstart="userAction.recordAudio()" onmouseup="userAction.transAudio()"
-                    ontouchend="userAction.transAudio()">
-                    <span class="material-icons">
-                        settings_voice
-                    </span>
-                </button>
-                <p>Hold to talk, release to transcribe.</p>
+        <div id="voiceRecorderSection" style="display: none">
+          <button
+            id="voiceRecorderButton"
+            class="btn filled green"
+            onmousedown="userAction.recordAudio()"
+            ontouchstart="userAction.recordAudio()"
+            onmouseup="userAction.transAudio()"
+            ontouchend="userAction.transAudio()"
+          >
+            <span class="material-icons"> settings_voice </span>
+          </button>
+          <p>Hold to talk, release to transcribe.</p>
 
-                <button id="restartButton" class="button-restart btn filled grey"
-                    onclick="window.location.href=window.location.href">
-                    <span class="material-icons">
-                        refresh
-                    </span>Restart
-                </button>
-            </div>
+          <button
+            id="restartButton"
+            class="button-restart btn filled grey"
+            onclick="window.location.href=window.location.href"
+          >
+            <span class="material-icons"> refresh </span>Restart
+          </button>
+        </div>
 
-            <!-- -END- Main Demo App Functions -->
-
-        </section>
-
-
-        <!-- Back button to all demo app -->
-        <a class="flex row center no-border btn ml-auto" target="_PARENT" href="https://platform.sentient.io/demoapps">
-            <span class="material-icons">
-                keyboard_backspace
-            </span>
-            All Demo Apps
-        </a>
+        <!-- -END- Main Demo App Functions -->
+      </section>
     </main>
 
     <!-- Popup Alert -->
     <div class="modal fade" id="alert" tabindex="-1" area-hidden="true">
-        <div class="modal-dialog d-flex" style="height:100vh">
-            <div class="modal-content m-auto p-2">
-                <div class="modal-header d-flex justify-content-center">
-                    <h5 class="modal-title" id="alertTitle"></h5>
-                </div>
-                <div class="modal-body p-3">
-                    <p id="alertContent"></p>
-                </div>
-                <div class="modal-footer d-flex justify-content-center">
-                    <button type="button" class="btn " data-dismiss="modal">Close</button>
-                </div>
-            </div>
+      <div class="modal-dialog d-flex" style="height: 100vh">
+        <div class="modal-content m-auto p-2">
+          <div class="modal-header d-flex justify-content-center">
+            <h5 class="modal-title" id="alertTitle"></h5>
+          </div>
+          <div class="modal-body p-3">
+            <p id="alertContent"></p>
+          </div>
+          <div class="modal-footer d-flex justify-content-center">
+            <button type="button" class="btn" data-dismiss="modal">
+              Close
+            </button>
+          </div>
         </div>
+      </div>
     </div>
     <!-- -END- Popup Alert -->
 
     <!-- Footer contains copyright info, essential links -->
     <footer>
-        <section>
-            <address>
-                <p>
-                    Designed and built by
-                    <a href="https://www.sentient.io/" target="_top">Sentient.io</a>
-                    with the help of our contributors.
-                </p>
-                <p>
-                    App version: 3.1.1
-                </p>
-            </address>
-            <a href="https://www.sentient.io/" target="_top">
-                <img src="assets/images/sentient-logo.png" alt="Sentient.io logo" class="logo">
-            </a>
-        </section>
+      <section>
+        <address>
+          <p>
+            Designed and built by
+            <a href="https://www.sentient.io/" target="_top">Sentient.io</a>
+            with the help of our contributors.
+          </p>
+          <p>App version: 3.1.1</p>
+        </address>
+        <a href="https://www.sentient.io/" target="_top">
+          <img
+            src="assets/images/sentient-logo.png"
+            alt="Sentient.io logo"
+            class="logo"
+          />
+        </a>
+      </section>
     </footer>
-</body>
+  </body>
 
-<!-- Disabled on 2022-Jan-17, for future upgrading purpose -->
-<!-- <script>
+  <!-- Disabled on 2022-Jan-17, for future upgrading purpose -->
+  <!-- <script>
     /** Detect if this page is opened inside an iframe */
     if (window.location !== window.parent.location) {
         /** Hide header and footer */
@@ -401,13 +436,14 @@
     }
 </script> -->
 
-<script src="./config.js"></script>
-<script src="functions/eventListeners.js"></script>
-<script src="functions/dataModifiers.js"></script>
-<script src="functions/apiCalls.js"></script>
-<script>
+  <script src="./config.js"></script>
+  <script src="functions/eventListeners.js"></script>
+  <script src="functions/dataModifiers.js"></script>
+  <script src="functions/apiCalls.js"></script>
+  <script>
     /** Disable long press, calling out menu event on mobile */
-    document.getElementById('voiceRecorderButton').oncontextmenu = function () { return false; }
-</script>
-
+    document.getElementById('voiceRecorderButton').oncontextmenu = function () {
+      return false
+    }
+  </script>
 </html>

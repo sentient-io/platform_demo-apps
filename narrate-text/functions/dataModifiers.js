@@ -15,7 +15,8 @@ const state = {
   },
   useProvidedText: true,
   providedText: {
-    english: 'Speech synthesis is the artificial production of human speech. A computer system used for this purpose is called a speech computer or speech synthesizer, and can be implemented in software or hardware products. A text-to-speech (TTS) system converts normal language text into speech; other systems render symbolic linguistic representations like phonetic transcriptions into speech.',
+    english:
+      'Speech synthesis is the artificial production of human speech. A computer system used for this purpose is called a speech computer or speech synthesizer, and can be implemented in software or hardware products. A text-to-speech (TTS) system converts normal language text into speech; other systems render symbolic linguistic representations like phonetic transcriptions into speech.',
     japanese:
       '音声合成とは、人間の音声を人工的に作り出すことである。音声情報処理の一分野。音声合成器により合成された音声を合成音声（ごうせいおんせい）と呼ぶ。典型的にはテキスト（文章）を音声に変換できることから、しばしばテキスト音声合成またはText-To-Speech (TTS)とも呼ばれる。なお、歌声を合成するものは特に歌声合成と呼ばれる。また、音声を別の個人あるいはキャラクターの音声に変換する手法は声質変換と呼ばれる。',
     mandarin:
@@ -34,4 +35,15 @@ function fetchApiKeyFromSessionStorage() {
   const k = window.sessionStorage.getItem('sentientApiKey')
   state.userApiKey = k
 }
-fetchApiKeyFromSessionStorage()
+
+/**
+ * Detect if the demo app is running locally, if so, use session storage store
+ * api key for developing convence.
+ * */
+if (
+  location.hostname === 'localhost' ||
+  location.hostname === '127.0.0.1' ||
+  location.hostname === ''
+) {
+  fetchApiKeyFromSessionStorage()
+}

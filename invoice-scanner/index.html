@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Fav Icon -->
+    <link rel="icon" type="image/svg" href="assets/images/Sentient-io_fav.svg" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+    <!-- Load generic demoapp CSS style sheets -->
+    <link rel="stylesheet" href="assets/style.css">
+
+    <!-- Import Google Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- jQuery(Google) first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/1.8.349/pdf.min.js"></script>
+	
+    <title>Scan Invoice</title>
+
+    <!-- Demo app specific styles will be instered below -->
+    <style>
+        #s-img-uploader {
+            max-width: 480px;
+            border: 2px dashed #ccc;
+            border-radius: 16px;
+            background: rgba(142, 175, 4, 0);
+        }
+
+        #s-img-uploader i {
+            font-size: 100px;
+            color: var(--green);
+            opacity: 30%;
+        }
+
+        #s-img-uploader input {
+            display: none;
+        }
+
+        /*.highlight will be added when user drag file above uploader area*/
+        #s-img-uploader.highlight {
+            border-color: var(--green);
+            background: rgba(142, 175, 4, 0.05);
+        }
+
+        #s-img-uploader.highlight i {
+            opacity: 100%;
+        }
+
+        #s-img-preview img,
+        #s-img-preview canvas,
+        #s-img-preview-base canvas,
+        #s-video-preview video {
+            max-width: 800px;
+            margin: auto;
+            display: block;
+            box-sizing: border-box;
+            border: 10px white solid;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        }
+
+        #s-img-preview canvas {
+            max-width: 100%;
+            height: auto;
+        }
+
+        #picture-loader {
+            background-color: rgba(000, 000, 000, 0.5);
+            color: white;
+        }
+
+        #sample-images img {
+            max-width: 120px;
+            margin: 1rem;
+            max-height: 90px;
+        }
+
+        #pdf-preview {
+            max-width: 619px;
+            max-height: 719px;
+            overflow-y: scroll;
+            overflow-x: scroll;
+        }
+
+        #custom-control-input:checked~.custom-control-label::before {
+            border-color: var(--green);
+            background-color: var(--green);
+        }
+
+        table {
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+            border-collapse: collapse;
+            border-spacing: 0;
+            overflow-y: scroll;
+            overflow-x: scroll;
+            max-height: 450px;
+            text-align: left;
+            font-weight: bold;
+            width: 100%;
+        }
+
+        table thead th {
+            background-color: #009578;
+            color: #ffffff;
+            padding: 0.7rem;
+        }
+
+        table tbody tr:nth-of-type(even) {
+            background: #eeeeee;
+        }
+
+        table tbody td {
+            overflow: scroll;
+            white-space: nowrap;
+            padding: 0.7rem;
+        }
+
+        @media screen and (max-width: 1000px) {
+            table {
+                margin-top: 5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- fullscreen sentient loader gif -->
+    <div id="loader" style="display: none">
+        <div class="align-items-center d-flex flex-column justify-content-center s-full-screen-loader">
+            <img src="assets/images/sentie-loader.gif" width="180px" height="auto" alt="" />
+            <p>Processing ...</p>
+            <p id="loader-text" class="mx-5" style="max-width: 500px; text-align: center"></p>
+        </div>
+    </div>
+
+    <main class="fullscreen">
+        <!-- Header area contains demo app title, description and link buttons -->
+        <header>
+            <section>
+                <div class="title">
+                    <img src="assets/images/iconinvoicescanner.svg" alt="">
+                    <h1>Scan Invoice<sup class="tag">DEMO</sup> </h1>
+                </div>
+                <p>
+                    This demo app takes in invoices and extracts meaningful and structured data, including the total
+                    amount, tax amount, date and merchant's name.
+                    <br><br>
+                    This API is opmised for computer generated PDFs, png, jpeg, tiff, jfif, and docx file
+                </p>
+            </section>
+            <aside>
+                <a href="https://platform.sentient.io/demoapps_detail/scan_invoice" target="_blank" class="btn">More Info</a>
+                <a href="https://github.com/sentient-io/plaftorm-dev_demo-apps/tree/main/invoice-scanner" target="_blank" class="btn filled">Demo App Code</a>
+            </aside>
+        </header>
+
+        <!-- Demo App Main Area -->
+        <div class="p-3 mt-5 d-flex flex-column">
+
+            <!-- Sample images container  -->
+            <div id="sample-images-container">
+                <p class="text-center">To start test, please upload <b class="text-green"> an invoice file </b>
+                    <b>below with the uploader</b>.
+                </p>
+            </div>
+
+            <div class="d-flex flex-column flex-lg-row justify-content-center align-items-center text-center"
+                style="height:100%;">
+                <!-- Pic Preview -->
+                <div id="s-img-preview-container" class="mt-4 mr-4" style="display: none;">
+                    <div id="s-img-preview"></div>
+                    <canvas id="pdf-preview"> </canvas>
+                    <div id="file-name"></div>
+                </div>
+
+
+                <!-- +----------------+ -->
+                <!-- |   App Inputs   | -->
+                <!-- +----------------+ -->
+                <div class="mt-4 col-12" id="s-img-uploader">
+                    <form class="text-center" style="padding:3rem">
+                        <i class="mb-3 material-icons">cloud_upload</i>
+                        <h5>Upload an image or file here</h5>
+                        <p></p>
+
+                        <input type="file" accept="image/* , .pdf, .docx" id="s-img-input"
+                            onchange="uploadImg(this.files)">
+                        <label class="px-3 btn filled green" for="s-img-input">Upload a
+                            Picture/File</label>
+                    </form>
+                </div>
+
+                <!-- +----------------+ -->
+                <!-- |   App Results  | -->
+                <!-- +----------------+ -->
+                <div id="result-table" style="display: none; overflow-x: auto;">
+                    <table width="100%" cellspacing="0" cellpadding="6">
+                        <thead>
+                            <tr>
+                                <th>Key</th>
+                                <th>Value</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body">
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+            </div>
+
+            <!-- +-----------------+ -->
+            <!-- | App Controllers | -->
+            <!-- +-----------------+ -->
+            <div class="text-center">
+                <label id="btn-upload-another" for="s-img-input" class="text-center btn filled grey "
+                    style="margin: 0 2rem; display: none !important;"> Upload another Picture </label>
+
+                <button id="btn-main-function" onclick="handleAnalyseInvoice()" class="text-center btn filled green"
+                    style="margin: 2rem 2rem; display: none;">Analyse Image</button>
+                <button id="btn-restart" onclick="handleRestart()" class="text-center btn filled grey"
+                    style="margin: 2rem 2rem; display: none !important;"> Restart </button>
+            </div>
+        </div>
+        </div>
+        <!-- End of Demo App Main Area -->
+    </main>
+
+    <!-- Popup Alert -->
+    <div class="modal fade" id="alert" tabindex="-1" area-hidden="true">
+        <div class="modal-dialog d-flex" style="height:100vh">
+            <div class="modal-content m-auto p-2">
+                <div class="modal-header d-flex justify-content-center">
+                    <h5 class="modal-title" id="alertTitle"></h5>
+                </div>
+                <div class="modal-body p-3">
+                    <p id="alertContent"></p>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button type="button" class="btn " data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- -END- Popup Alert -->
+
+    <!-- Footer contains copyright info, essential links -->
+    <footer>
+        <section>
+            <address>
+                <p>
+                    Designed and built by
+                    <a href="https://www.sentient.io/" target="_top">Sentient.io</a>
+                    with the help of our contributors.
+                </p>
+                <!-- Last update 2022 Feb 23 -->
+                <p>
+                    App version: 3.1.2
+                </p>
+            </address>
+            <a href="https://www.sentient.io/" target="_top">
+                <img src="assets/images/sentient-logo.png" alt="Sentient.io logo" class="logo">
+            </a>
+        </section>
+    </footer>
+</body>
+
+<!-- Disabled on 2022-Jan-17, for future upgrading purpose -->
+<!-- <script>
+    /** Detect if this page is opened inside an iframe */
+    if (window.location !== window.parent.location) {
+        /** Hide header and footer */
+        ['header', 'footer'].forEach(tag => {
+            document.getElementsByTagName(tag)[0].setAttribute('style', 'display:none')
+        })
+        /** Hide background */
+        document.getElementsByTagName('main')[0].setAttribute('class', 'iframe')
+    }
+</script> -->
+
+<script src="./config.js"></script>
+<script src="functions/eventListeners.js"></script>
+<script src="functions/dataModifiers.js"></script>
+<script src="functions/apiCalls.js"></script>
+
+</html>

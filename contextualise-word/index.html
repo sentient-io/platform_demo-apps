@@ -1,653 +1,283 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <!-- Required meta tags -->
     <meta name="robots" content="noindex" />
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Contextualise Word</title>
-    <!-- Angular -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.9/angular.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.9/angular-sanitize.min.js"></script>
 
-    <!-- favicon CSS -->
-    <link rel="icon" href="https://sentient.io/img/favicon.ico" type="image/x-icon">
-    <link rel="shortcut icon" href="https://sentient.io/img/favicon.ico" type="image/x-icon">
+    <!-- Fav Icon -->
+    <link
+      rel="icon"
+      type="image/svg"
+      href="assets/images/Sentient-io_fav.svg"
+    />
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-
-
-
-    <!-- Import Google Material Icons -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Core functions below -->
+    <script src="assets/samples.js"></script>
+    <script src="config.js"></script>
+    <script src="functions/dataModifier.js"></script>
+    <script src="functions/eventListeners.js"></script>
+    <script src="functions/apiCalls.js"></script>
+    <!-- End of core functions -->
 
     <!-- Load generic demoapp CSS style sheets -->
-    <link rel="stylesheet" href="assets/style.css">
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
-        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
-        crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-
+    <link rel="stylesheet" href="assets/style.css" />
 
     <!-- Demo app specific styles will be instered below -->
     <style>
-        .sub-head-height {
-            height: 45px;
-            margin: 0;
-            font-size: 14px;
-            font-weight: normal !important;
-        }
-
-        .btn-response {
-            position: relative;
-            bottom: 2.5rem;
-            padding: 0rem 2rem;
-            font-size: 13.5px;
-        }
-
-        @media (min-width: 992px) {
-
-            .container,
-            .container-lg,
-            .container-md,
-            .container-sm {
-                max-width: 960px;
-            }
-        }
-
-        @media (min-width: 768px) {
-            .container {
-                max-width: 720px;
-            }
-        }
-
-        @media (min-width: 576px) {
-
-            .container,
-            .container-sm {
-                max-width: 540px;
-            }
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            display: flex;
-            flex-direction: row;
-        }
-
-        label {
-            color: #424143;
-            font-size: 16px;
-            font-weight: normal !important;
-            position: absolute;
-            pointer-events: none;
-            left: 10px;
-            top: 13px;
-            transition: 0.2s ease all;
-            -moz-transition: 0.2s ease all;
-            -webkit-transition: 0.2s ease all;
-        }
-
-        input {
-            font-size: 18px;
-            padding: 10px 10px 10px 5px;
-            display: block;
-            width: 100%;
-            height: 52px;
-            border: none;
-            border: 1px solid #757575;
-            border-radius: 5px;
-        }
-
-        input:focus~label,
-        input:valid~label {
-            top: -10px;
-            font-size: 14px;
-            color: #424143;
-            background: -webkit-linear-gradient(bottom, rgb(255, 255, 255) 0%, rgba(254, 254, 254, 1) 49%, rgb(246, 246, 246) 49%, rgb(246, 246, 246) 100%);
-            background: -moz-linear-gradient(bottom, rgb(255, 255, 255) 0%, rgba(254, 254, 254, 1) 49%, rgb(246, 246, 246) 49%, rgb(246, 246, 246) 100%);
-            background: -o-linear-gradient(bottom, rgb(255, 255, 255) 0%, rgba(254, 254, 254, 1) 49%, rgb(246, 246, 246) 49%, rgb(246, 246, 246) 100%);
-            background: -ms-linear-gradient(bottom, rgb(255, 255, 255) 0%, rgba(254, 254, 254, 1) 49%, rgb(246, 246, 246) 49%, rgb(246, 246, 246) 100%);
-        }
-
-        .around-panel {
-            font-size: 14px;
-            box-shadow: 0px 0px 3px 0px rgb(212 213 213);
-        }
-
-        .around-panel button {
-            position: relative;
-            padding: 0.75rem 5rem 0.75rem 0.75rem;
-            margin: 0 0;
-            /* line-height: 3rem; */
-            background-color: #f3f2f2ba;
-            border-bottom-left-radius: 0 !important;
-            border-bottom-right-radius: 0 !important;
-            border-top-left-radius: 0px;
-            border-top-right-radius: 0px;
-        }
-
-        .accordion {
-            background-color: #eee;
-            color: #444;
-            cursor: pointer;
-            /* padding: 18px; */
-            width: 100%;
-            text-align: left;
-            border: none;
-            outline: none;
-            transition: 0.4s;
-            margin-bottom: 20px;
-            min-height: 65px;
-        }
-
-
-        .panel {
-            padding: 10px 18px;
-            background-color: #f3f2f2ba !important;
-            display: none;
-            overflow: hidden;
-            margin-bottom: 10px !important;
-            /* background-color: #fff; */
-            border: none;
-            -webkit-box-shadow: none !important;
-            box-shadow: none !important;
-
-        }
-
-        .fa-play-circle {
-            font-size: 20px;
-            position: absolute;
-            right: 10px;
-            top: 25px;
-            font-weight: bold;
-            transform-origin: center center;
-        }
-
-        .up.fa-play-circle {
-            transform: rotate(30deg);
-            transition-timing-function: ease-in-out;
-            color: #707070;
-        }
-
-        .down.fa-play-circle {
-            transform: rotate(90deg);
-            color: #d4d4d4;
-        }
-
-        button.accordion:hover .fa-play-circle {
-            color: #707070;
-        }
-
-        .fa-angle-down,
-        .fa-angle-up {
-            position: absolute;
-            right: 10px;
-            top: 20px;
-            background-color: gray;
-            width: 28px;
-            height: 28px;
-            border-radius: 100px;
-            z-index: 1;
-            text-align: center;
-            color: white;
-            padding-top: 7px;
-        }
-
-        .around-panel button {
-            position: relative;
-            padding: 0.75rem 5rem 0.75rem 0.75rem;
-            margin: 0 0;
-            /* line-height: 3rem; */
-            background-color: #f3f2f2ba;
-            border-bottom-left-radius: 0 !important;
-            border-bottom-right-radius: 0 !important;
-            border-top-left-radius: 0px;
-            border-top-right-radius: 0px;
-        }
-
-        .around-panel {
-            font-size: 14px;
-            box-shadow: 0px 0px 3px 0px rgb(212, 213, 213);
-        }
-
-        .around-panel h5 {
-            font-size: 14px;
-            font-weight: bold;
-
-        }
-
-        .key {
-            padding: 0 .75rem;
-            border-radius: 10px;
-            color: #fff;
-        }
-
-        .panel-box1,
-        .panel-box2,
-        .panel-box3 {
-            background-color: #ffffff;
-            padding: 1.5rem;
-            border-left: 3px solid;
-        }
-
-        .panel-box1 {
-            border-color: #db2c6c;
-        }
-
-        .panel-box1 h5.sub-titles {
-            color: #db2c6c;
-        }
-
-        .panel-box1 .key {
-            background-color: #db2c6c;
-        }
-
-        .panel-box1 .poss-text {
-            color: #db2c6c;
-        }
-
-        .panel-box2 {
-            border-color: #ffb810;
-        }
-
-        .panel-box2 h5.sub-titles {
-            color: #ffb810;
-        }
-
-        .panel-box2 .key {
-            background-color: #ffb810;
-        }
-
-        .panel-box2 .poss-text {
-            color: #ffb810;
-            ;
-        }
-
-        .complete {
-            color: #aac342;
-        }
-
-        svg {
-            vertical-align: middle;
-            width: 24px;
-            margin-top: -7px;
-        }
-
-        /* .edit-text{
-            display:block;
-        }
-        .input-text{
-            display: none;
-        } */
-        .pb-2px {
-            padding-bottom: 2px;
-        }
-
-        .analyse-disable {
-            cursor: not-allowed;
-            pointer-events: none;
-            opacity: .5;
-        }
-
-        .poss-text {
-            font-weight: bold;
-            font-size: 16px;
-            padding-left: 10px;
-        }
-
-        .key-text {
-            padding-left: 1rem;
-        }
-
-        .inputKey {
-            background-color: #db2c6c;
-            padding: 0 .75rem;
-            border-radius: 10px;
-            color: #fff;
-        }
-
-        .description-para {
-            padding: 10px 10px;
-        }
-
-        .border {
-            padding: 0px 20px;
-            padding-left: 12px !important;
-            padding-right: 12px !important;
-            background-color: #f3f2f2ba !important;
-        }
-
-        .list-text {
-            border-top: 1px solid #80808042;
-        }
-
-        .content {
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-        }
-
-        .flex-fill {
-            flex: 1 1 auto;
-        }
-
-        .loading-container {
-            background: #cececea6;
-            position: fixed;
-            top: 0px;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 5;
-        }
+      .resTag {
+        background-color: red;
+        padding: 1px 6px;
+        border-radius: 12px;
+        text-align: center;
+        display: inline-block;
+        color: white;
+      }
     </style>
+  </head>
 
-</head>
-
-<body ng-app="wsdApp" ng-controller="wsdCtrl" ng-cloak>
-
+  <body>
     <main class="fullscreen">
-        <!-- fullscreen sentient loader gif -->
-        <div class="loading-container loading-topbar" ng-show="loadeer" id="loader">
-            <div>
-                <img width="200px" src="assets/images/sentie-loader.gif">
-            </div>
-        </div>
+      <!-- Header area contains demo app title, description and link buttons -->
+      <header>
+        <section>
+          <div class="title">
+            <!-- Insert demo app icons here -->
+            <img
+              src="assets/images/iconcontextualiseword.svg"
+              alt="Contextualise Word"
+            />
+            <h1>Contextualise Word<sup class="tag">DEMO</sup></h1>
+          </div>
+          <!-- Demo app description -->
+          <p>
+            This demo app provides the meaning(s) of a specific noun within the
+            context of the entire sentence in English. Paste in a text blurb and
+            search for a specific noun to understand its context within the
+            text.
+          </p>
+        </section>
+        <aside>
+          <a href="https://platform.sentient.io/demoapps_detail/contextualise_word" target="_blank" class="btn">More Info</a>
+          <a href="https://github.com/sentient-io/platform_demo-apps/tree/main/contextualise-word" target="_blank" class="btn filled">Demo App Code</a>
+        </aside>
+      </header>
 
-        <!-- Header area contains demo app title, description and link buttons -->
-        <header>
-            <section>
-                <div class="title">
-                    <img src="assets/images/iconcontextualiseword.svg" alt="">
-                    <h1>Identify & Classify Objects in Text (EN) <sup class="tag">DEMO</sup> </h1>
-                </div>
-                <p>
-                    This demo app provides the meaning(s) of a specific noun within the context of the entire sentence
-                    in English. Paste in a text blurb and search for a specific noun to understand its context within
-                    the text.
-                    <br><br>
-                    Do note the 5000 character limit.
-                </p>
-            </section>
-            <aside>
-                <a href="https://platform.sentient.io/demoapps_detail/contextualise_word" target="_blank" class="btn">More Info</a>
-                <a href="https://github.com/sentient-io/platform_demo-apps/tree/main/contextualise-word" target="_blank" class="btn filled">Demo App Code</a>
-            </aside>
-        </header>
-
-        <!-- Demo App Main Area -->
-        <div class="container row" style="min-height: 30vh;">
-
-            <!-- +----------------+ -->
-            <!-- |   App Inputs   | -->
-            <!-- +----------------+ -->
-
-            <!-- text box -->
-            <div class="col-xs-12 col-sm-6 ">
-                <h5 class="sub-head-height"><b>Step 1: </b> Type / paste text to be analysed</h5>
-                <div class="text-center left-container">
-                    <div style="position: relative;">
-                        <div class="error-msg" style="display:none;">
-                            <span style="color:red;" id="text-error">Get start by put some text here</span>
-                        </div>
-                        <div class="text-box textarea-disabled">
-                            <textarea style="resize: none" placeholder="Paste text to be analysed ..." id="textinput"
-                                name="textinput" ng-keyup="contentCount()"></textarea>
-                            <div id="textinputDiv" class="text-left" style="overflow: scroll; max-height: 328px;"
-                                ng-bind-html="htmlText">
-                            </div>
-
-                        </div>
-                        <div class="btn-response input-text" style="display: flex;color: gray;">
-                            <div ng-show="!aftRes" class="text-left" style="flex: 0 0 50%; max-width:50%" id="count">
-                                <span>Characters : 0 / 5000</span>
-                            </div>
-                            <div ng-show="!aftRes" class="text-right" style="flex: 0 0 50%; max-width:50%"
-                                ng-click="textClear()">
-                                <span class="reset" style="color: gray;">Clear</span>
-                            </div>
-                            <div ng-show="aftRes" class="text-left"
-                                style="text-align: right; flex: 0 0 66.66%; max-width:66.66%; color: #abc445">
-                                <span class="complete"><svg version="1.1" xmlns="http://www.w3.org/2000/svg"
-                                        xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid meet"
-                                        viewBox="0 0 600 600" width="30" height="30">
-                                        <defs>
-                                            <path
-                                                d="M307.68 485.46C310.24 477.28 311.66 472.73 311.95 471.82C361.23 314.3 465.1 178.81 604.4 90.32C606.72 88.84 618.34 81.45 639.26 68.16C614.89 72.67 601.36 75.18 598.65 75.68C457.28 101.88 340.54 195.21 283.81 326.52C246.72 282.58 203.2 244.97 154.23 214.63C153.73 214.32 151.28 212.8 146.86 210.05L74.56 351.83C80.93 353 84.47 353.65 85.17 353.78C167.52 368.74 243.2 411.7 298.27 474.68C299.52 476.11 302.66 479.71 307.68 485.46Z"
-                                                id="d2hIXwUuYf"></path>
-                                            <path
-                                                d="M449.83 259.89C483.47 325.51 482.1 404.91 445.6 469.13C411.85 528.46 351.35 568.67 283.79 576.66C237.39 582.15 191.48 572.56 150.95 548.93C47.75 488.71 12 354.95 71.26 250.74C105.01 191.42 165.52 151.2 233.07 143.21C273.19 138.47 312.98 145.06 349.21 162.22C361.55 155.95 374.36 150.53 387.49 145.8C386.94 145.48 382.55 142.92 382 142.6C335.41 115.44 282.58 104.41 229.23 110.72C151.55 119.91 82 166.12 43.17 234.37C-24.97 354.21 16.14 508.04 134.8 577.26C181.43 604.46 234.24 615.49 287.56 609.19C287.56 609.19 287.6 609.18 287.6 609.18C365.28 600 434.84 553.75 473.69 485.52C516.57 410.11 517.31 316.41 476.04 240.03C475.83 240.17 474.78 240.91 472.89 242.24C462.5 249.94 454.81 255.82 449.83 259.89Z"
-                                                id="dH9pt8Pxx"></path>
-                                        </defs>
-                                        <g>
-                                            <g>
-                                                <g>
-                                                    <g>
-                                                        <use xlink:href="#d2hIXwUuYf" opacity="1" fill="#aac342"
-                                                            fill-opacity="1"></use>
-                                                        <g>
-                                                            <use xlink:href="#d2hIXwUuYf" opacity="1" fill-opacity="0"
-                                                                stroke="#000000" stroke-width="1" stroke-opacity="0">
-                                                            </use>
-                                                        </g>
-                                                    </g>
-                                                    <g>
-                                                        <use xlink:href="#dH9pt8Pxx" opacity="1" fill="#aac342"
-                                                            fill-opacity="1"></use>
-                                                        <g>
-                                                            <use xlink:href="#dH9pt8Pxx" opacity="1" fill-opacity="0"
-                                                                stroke="#000000" stroke-width="1" stroke-opacity="0">
-                                                            </use>
-                                                        </g>
-                                                    </g>
-                                                </g>
-                                            </g>
-                                        </g>
-                                    </svg> Analysis Complete</span>
-                            </div>
-                            <div ng-show="aftRes" class="text-right" style="flex: 0 0 33.33%; max-width:33.33%;"
-                                ng-click="editInput()">
-                                <span class="reset" style="color: gray;"> <i class="material-icons">edit</i> Edit
-                                </span>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
+      <!-- Main demo app functions and content -->
+      <section class="app-container" id="app">
+        <div
+          id="UserInputs"
+          class="flex row center items-start"
+          style="width: 100%"
+        >
+          <div id="UserInputs_Step1" class="flex column pa-sm col-6">
+            <div class="flex row between center">
+              <h4>Step1: Input text to analyse</h4>
+              <div id="SampleContentCtn">
+                <span
+                  class="cursor-pointer flex row center"
+                  style="color: rgb(232, 146, 40)"
+                  onclick="loadSampleContent(state.sampleContent)"
+                >
+                  <span class="material-icon mr-xs"> autorenew </span>
+                  Sample Content
+                  <span id="SampleContent"></span>
+                </span>
+              </div>
             </div>
 
-            <!-- Noun box -->
-            <div class="col-xs-12 col-sm-6">
-                <h5 class="sub-head-height"><b>Step 2: </b> Type noun to be analysed from text</h5>
-                <div class="right-container col-xs-12 col-sm-9" style="flex: 0 0 66.66%; max-width:66.66%;">
-                    <div class="input-group">
-                        <input id="targetId" class="key-text" type="text" ng-keyup="contentCount()" required>
-                        <span class="highlight"></span>
-                        <span class="bar"></span>
-                        <label ng-show="!errorTrue" style="color: gray;background-color: white;">{{keywordBox}}</label>
-                        <label style="color: red" ng-show="errorTrue">{{keywordBox}}</label>
-                    </div>
-                </div>
-                <div class="col-xs-12 col-sm-3" style="flex: 0 0 33.33%; max-width:33.33%;">
-                    <button ng-show="!showAnalysBtn || !keywrdBx" class="btn filled grey;
-                        cursor: no-drop;" disabled><span><span>Analyse </button>
-                    <button ng-show="showAnalysBtn && keywrdBx" ng-click="analyzeString()"
-                        class="btn filled green"><span><span>Analyse </button>
-                </div>
-
-
-                <!-- +----------------+ -->
-                <!-- |   App Result   | -->
-                <!-- +----------------+ -->
-                <div class="col-xs-12 output-session" style="display: block;">
-                    <label style="font-size: 12px;padding-left: 10px;color: red;">{{keywordErrormsg}}</label>
-                    <div>
-                        <div class="mt-2" ng-show="totalLenShow && !keywordErrormsg && totalLen>0">We found the noun
-                            <span>
-                                <b>'{{targetWord}}'</b></span> in {{totalLen}} places
-                        </div>
-                        <div class="mt-2" ng-show="totalLenShow && !keywordErrormsg && totalLen<1">Either <span>
-                                <b>'{{targetWord}}'</b></span> is not a valid noun or it is not found within the text
-                        </div>
-
-                        <div class="around-panel" ng-repeat="res in wsdResArr">
-                            <div class="mt-2 pb-2px"
-                                ng-style="{'background-color':'{{res.panelBox.bg}}',  'border-left':'{{res.panelBox.borlft}}'}">
-                                <p class="description-para" style="color: gray;"
-                                    ng-bind-html="convertPtoHtml(res.paragraph, targetWord, res.panelBox.txtBgclr)" />
-                                </p>
-                                <h4 class="poss-text mt-2" ng-style="{color:'{{res.panelBox.txtBgclr}}'}">Possible
-                                    meanings :</h4>
-                                <div class="mb-1" ng-repeat="socit in res.societyNames">
-                                    <button class="accordion" ng-show="!list" ng-click="list=!list">
-                                        <span>{{socit.societyName}}</span>
-                                        <i class="material-icons" aria-hidden="true">expand_more</i>
-                                    </button>
-
-                                    <button class="accordion active" ng-show="list" ng-click="list=!list">
-                                        <span>{{socit.societyName}}</span>
-                                        <i class="material-icons" aria-hidden="true">expand_less</i>
-                                    </button>
-                                    <div>
-                                    </div>
-                                    <div class="border">
-                                        <div class="list-text" ng-show="list">
-                                            <h5 style="padding-top: 5px;">Possible Parent Class Definitions:</h5>
-                                            <div class="" ng-repeat="hyper in socit.hypernymsList">
-                                                <h5 class="sub-titles" ng-style="{color:'{{res.panelBox.txtBgclr}}'}">
-                                                    {{$index+1}}. {{customiseString(hyper.hypernym_name)}}</h5>
-                                                <p style="color: gray;">{{hyper.hypernym_definition}}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Restart button -->
-        <div class="m-auto pt-4 d-flex flex-column-reverse flex-sm-row justify-content-center align-items-center"
-            style="max-width: 600px;">
-            <button id="btn-restart" class="btn filled grey" style="display: none !important;"
-                onclick="handleRestart()"> Restart </button>
-        </div>
-        </div>
-
-        <!-- Back button to all demo app -->
-        <div class="mt-3 d-flex justify-content-center">
-            <a href="https://platform.sentient.io/demoapps" target="_top">
-                <button class="d-flex row align-items-center btn cancel
-                ">
-                    <span class="material-icons mr-2 ">arrow_back</span>
-                    All Demo Apps
+            <textarea
+              name=""
+              id="userInputText"
+              cols="30"
+              rows="10"
+              class="ma-xs"
+              placeholder="Type / paste text here to analyse"
+              oninput="updateUserInputText()"
+            ></textarea>
+            <div
+              style="
+                background-color: white;
+                border-radius: 0.5rem;
+                padding: 0.75rem;
+                margin: 0.5rem;
+                max-height: 250px;
+                overflow: scroll;
+              "
+              id="InputTextWithTag"
+              hidden
+            ></div>
+            <div class="flex row between">
+              <span> Characters: <span id="CharCount">0</span> / 5000 </span>
+              <div id="clearUserInputBtn">
+                <button
+                  class="btn text pa-xs"
+                  style="
+                    min-width: auto;
+                    text-decoration: none;
+                    padding: 4px;
+                    height: auto;
+                  "
+                  onclick="clearUserInputText()"
+                >
+                  Clear
                 </button>
-            </a>
+              </div>
+            </div>
+          </div>
+
+          <div id="UserInputs_Step2" class="flex column pa-sm col-6">
+            <h4>Step2: Input noun from text</h4>
+            <div class="flex row center no-wrap">
+              <input
+                type="text"
+                class="ma-xs full-width"
+                id="userInputNoun"
+                placeholder="Noun from the text"
+                oninput="updateUserInputNoun()"
+              />
+
+              <div id="AnalyseBtnCtn">
+                <button
+                  id="AnalyseBtton"
+                  class="btn filled green"
+                  disabled
+                  style="min-width: auto"
+                  onclick="triggerAnalyseText()"
+                >
+                  Analyse
+                </button>
+              </div>
+            </div>
+
+            <div class="pa-xs">
+              <div id="InputErrorMessage" hidden>
+                <div class="text-error flex row no-wrap">
+                  <span class="material-icon pr-xs">error</span>
+                  <p>
+                    Invalid keyword or keyword not found in article. Keyword
+                    have to be a single noun word from the input text.
+                  </p>
+                </div>
+              </div>
+
+              <div id="ResultDisplay" hidden></div>
+            </div>
+          </div>
+
+          <div id="RestartButton" hidden>
+            <button class="btn filled green" onclick="reloadPage()">
+              Restart
+            </button>
+          </div>
         </div>
+      </section>
     </main>
 
+    <!-- Sentient loader gif -->
+    <div id="Loader" hidden>
+      <div
+        style="
+          justify-content: center;
+          align-items: center;
+          overflow: hidden;
+          display: flex;
+          width: 100vw;
+          min-height: 100vh;
+          height: 100%;
+          top: 0;
+          position: fixed;
+          background-color: #f5f5f599;
+          z-index: 999;
+        "
+      >
+        <img
+          src="assets/images/sentie-loader.gif"
+          style="width: 200px"
+          alt=""
+        />
+      </div>
+    </div>
+    <!-- End Sentient loader gif -->
+
     <!-- Popup Alert -->
-    <div class="modal fade" id="alert" tabindex="-1" area-hidden="true">
-        <div class="modal-dialog d-flex" style="height:100vh">
-            <div class="modal-content m-auto p-2">
-                <div class="modal-header d-flex justify-content-center">
-                    <h5 class="modal-title" id="alertTitle"></h5>
-                </div>
-                <div class="modal-body p-3">
-                    <p id="alertContent"></p>
-                </div>
-                <div class="modal-footer d-flex justify-content-center">
-                    <button type="button" class="btn " data-dismiss="modal">Close</button>
-                </div>
+    <div id="PopupAlert" hidden>
+      <div style="position: fixed; top: 0; left: 0" ƒ>
+        <div
+          style="
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            align-content: center;
+            background-color: rgba(0, 0, 0, 0.4);
+          "
+        >
+          <div
+            style="
+              background: white;
+              border-radius: 1rem;
+              min-width: 300px;
+              min-height: 200px;
+              padding: 1rem;
+              display: flex;
+              flex-direction: column;
+              justify-content: space-around;
+              align-items: center;
+            "
+          >
+            <div>
+              <h5 id="AlertTitle">Test Title</h5>
             </div>
+            <div class="modal-body p-3">
+              <p id="AlertContent">Test Message</p>
+            </div>
+            <div>
+              <button type="button" onclick="ClosePopupAlert()">Close</button>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
     <!-- -END- Popup Alert -->
 
     <!-- Footer contains copyright info, essential links -->
     <footer>
-        <section>
-            <address>
-                <p>
-                    Designed and built by
-                    <a href="https://www.sentient.io/" target="_top">Sentient.io</a>
-                    with the help of our contributors.
-                </p>
-                <p>
-                    App version: 3.1.1
-                </p>
-            </address>
-            <a href="https://www.sentient.io/" target="_top">
-                <img src="assets/images/sentient-logo.png" alt="Sentient.io logo" class="logo">
-            </a>
-        </section>
+      <section>
+        <address>
+          <p>
+            Designed and built by
+            <a href="https://www.sentient.io/" target="_top">Sentient.io</a>
+            with the help of our contributors.
+          </p>
+          <p>App version: 3.1.2</p>
+          <!-- Latest update 2022 Feb 16 4:45PM -->
+        </address>
+        <a href="https://www.sentient.io/" target="_top">
+          <img
+            src="assets/images/sentient-logo.png"
+            alt="Sentient.io logo"
+            class="logo"
+          />
+        </a>
+      </section>
     </footer>
-</body>
+  </body>
 
-
-<script src="js/wsd.js"></script>
-
-<!-- <script>
-    /** Detect if this page is opened inside an iframe */
-    if (window.location !== window.parent.location) {
-        /** Hide header and footer */
-        ['header', 'footer'].forEach(tag => {
-            document.getElementsByTagName(tag)[0].setAttribute('style', 'display:none')
-        })
-        /** Hide background */
-        document.getElementsByTagName('main')[0].setAttribute('class', 'iframe')
-    }
-</script> -->
-
-<script>
-    var acc = document.getElementsByClassName("accordion");
-    var i;
-    for (i = 0; i < acc.length; i++) {
-        acc[i].addEventListener("click", function () {
-            this.classList.toggle("active");
-            var panel = this.nextElementSibling;
-            if (panel.style.display === "block") {
-                panel.style.display = "none";
-            } else {
-                panel.style.display = "block";
-            }
-        });
-    }
-
-    $(document).on("keydown", "#textinput", function (evt) {
-        var firstChar = $("#textinput").val()
-        if (evt.keyCode == 32 && firstChar == "") {
-            return false;
-        }
-    });
-
-    $(document).on("keydown", "#targetId", function (evt) {
-        var tarChar = $("#targetId").val()
-        if (evt.keyCode == 32 && tarChar == "") {
-            return false;
-        }
-    });
-
-</script>
-
-<script src="./config.js"></script>
-<script src="functions/eventListeners.js"></script>
-<script src="functions/dataModifiers.js"></script>
-<script src="functions/apiCalls.js"></script>
-
+  <!-- Disabled on 2021-Jun-17, for future upgrading purpose -->
+  <!-- <script>
+		/** Detect if this page is opened inside an iframe */
+		if (window.location !== window.parent.location) {
+			/** Hide header and footer */
+			['header', 'footer'].forEach(tag => {
+				document.getElementsByTagName(tag)[0].setAttribute('style', 'display:none')
+			})
+			/** Hide background */
+			document.getElementsByTagName('main')[0].setAttribute('class', 'iframe')
+		}
+	</script> -->
 </html>

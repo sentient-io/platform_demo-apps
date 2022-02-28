@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <!-- Fav Icon -->
+    <link rel="icon" type="image/svg" href="assets/images/Sentient-io_fav.svg" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous" />
+
+    <!-- Load generic demoapp CSS style sheets -->
+    <link rel="stylesheet" href="assets/style.css" />
+
+    <!-- Import Google Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+
+    <!-- jQuery(Google) first, then Bootstrap JS-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+        crossorigin="anonymous"></script>
+
+    <title>Person Reidentification</title>
+
+    <!-- Demo app specific styles will be instered below -->
+    <style>
+        #s-img-uploader {
+            max-width: 480px;
+            border: 2px dashed #ccc;
+            border-radius: 16px;
+            background: rgba(142, 175, 4, 0);
+        }
+
+        #s-img-uploader i {
+            font-size: 100px;
+            color: var(--green);
+            opacity: 30%;
+        }
+
+        #s-img-uploader input {
+            display: none;
+        }
+
+        /*.highlight will be added when user drag file above uploader area*/
+        #s-img-uploader.highlight {
+            border-color: var(--green);
+            background: rgba(142, 175, 4, 0.05);
+        }
+
+        #s-img-uploader.highlight i {
+            opacity: 100%;
+        }
+
+        #s-img-preview img,
+        #s-img-preview canvas {
+            max-width: 800px;
+            margin: auto;
+            display: block;
+            box-sizing: border-box;
+            border: 10px white solid;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        }
+
+        #s-img-preview canvas {
+            max-width: 100%;
+            height: auto;
+        }
+
+        #picture-loader {
+            background-color: rgba(000, 000, 000, 0.5);
+            color: white;
+        }
+
+        #sample-images img {
+            max-width: 120px;
+            margin: 1rem;
+            max-height: 90px;
+        }
+
+        #custom-control-input:checked~.custom-control-label::before {
+            border-color: var(--green);
+            background-color: var(--green);
+        }
+        #resultContainer {
+            display: none;
+            margin: 4rem auto;
+            width:50%
+        }
+        #bar {
+            background-color: rgb(192, 192, 192);
+            border-radius: 15px;
+        }
+        #percentage {
+            background-color: rgb(116, 194, 92);
+            color: white;
+            padding: 1%;
+            text-align: right;
+            font-size: 20px;
+            border-radius: 15px;
+            width: 100%;
+        }
+
+    </style>
+</head>
+
+<body>
+    <main class="fullscreen">
+        <!-- fullscreen sentient loader gif -->
+        <div id="loader" style="display: none">
+            <div class="align-items-center d-flex flex-column justify-content-center s-full-screen-loader">
+                <img src="assets/images/sentie-loader.gif" width="180px" height="auto" alt="" />
+                <p>Processing ...</p>
+                <p id="loader-text" class="mx-5" style="max-width: 500px; text-align: center"></p>
+            </div>
+        </div>
+
+        <!-- Header area contains demo app title, description and link buttons -->
+        <header>
+            <section>
+                <div class="title">
+                    <img src="assets/images/iconpersonreidentification.png" width="70px" height="auto" alt="" />
+                    <h1>Person Reidentification<sup class="tag">DEMO</sup></h1>
+                </div>
+                <p>
+                    This demo app takes in 2 images and returns a similarity score (confidence) between two cropped images of people in the same scene. The images are captured across different camera views in a multi-camera system, or across different time in a single camera system
+                </p>
+            </section>
+            <aside>
+                <a href="https://platform.sentient.io/demoapps_detail/person_reidentification" target="_blank" class="btn">More
+                    Info</a>
+                <a href="https://github.com/sentient-io/platform_demo-apps/tree/main/person-reidentification" target="_blank" class="btn filled">Demo App Code</a>
+            </aside>
+        </header>
+
+        <!-- Demo App Main Area -->
+        <div class="p-3 mt-5 d-flex flex-column" style="min-height: 30vh">
+            <!-- Sample images container  -->
+            <div id="sample-images-container">
+                <p class="text-center">
+                    To start test, please click the
+                    <b class="text-green">provided images below</b>, or upload a picture
+                    <b class="text-beige">with the uploader</b>.
+                </p>
+                <div class="d-flex flex-column flex-sm-row justify-content-center align-items-center">
+                    <div id="sample-images" class="d-flex flex-wrap justify-content-center">
+                        <!-- Sample images will be rendered by renderSampleImages() function inside sampleImages.js -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12">
+
+                <!-- Pic Preview -->
+                <div id="s-img-preview" class="d-flex justify-content-center">
+                </div>
+                
+
+                <!-- +----------------+ -->
+                <!-- |   App Inputs   | -->
+                <!-- +----------------+ -->
+                <div class="mx-auto mt-4 p-3" id="s-img-uploader">
+                    <form class="text-center">
+                        <i class="mb-3 material-icons">cloud_upload</i>
+                        <h5>Drag and drop 2 images here</h5>
+                        <p>(Max file size : 5mb)</p>
+                        <p>or</p>
+                        <input type="file" multiple accept="image/*" id="s-img-input">
+                        <label class="px-3 btn filled green" for="s-img-input">Upload 2 Pictures</label>
+                    </form>
+                </div>
+
+                <!-- +----------------+ -->
+                <!-- |   App Results  | -->
+                <!-- +----------------+ -->
+                <div id="resultContainer">
+                    <h4>Similarity Confidence</h4>
+                    <div id="bar">
+                        <div id="percentage"> </div>
+                    </div>
+                </div>
+                <!-- +-----------------+ -->
+                <!-- | App Controllers | -->
+                <!-- +-----------------+ -->
+                <div class="text-center">
+                    <label id="btn-upload-another" for="s-img-input" class="text-center btn filled grey"
+                        style="margin: 0rem 2rem; display: none !important">
+                        Upload another Picture
+                    </label>
+
+                    <button id="btn-main-function" onclick="handleImageProcessing()"
+                        class="text-center btn filled green" style="margin: 2rem 2rem; display: none">
+                        Identify Person
+                    </button>
+                    <button id="btn-restart" onclick="handleRestart()" class="text-center btn filled grey"
+                        style="margin: 2rem 2rem; display: none !important">
+                        Restart
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- End of Demo App Main Area -->
+    </main>
+
+    <!-- Popup Alert -->
+    <div class="modal fade" id="alert" tabindex="-1" area-hidden="true">
+        <div class="modal-dialog d-flex" style="height: 100vh">
+            <div class="modal-content m-auto p-2">
+                <div class="modal-header d-flex justify-content-center">
+                    <h5 class="modal-title" id="alertTitle"></h5>
+                </div>
+                <div class="modal-body p-3">
+                    <p id="alertContent"></p>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button type="button" class="btn" data-dismiss="modal">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- -END- Popup Alert -->
+
+    <!-- Footer contains copyright info, essential links -->
+    <footer>
+        <section>
+            <address>
+                <p>
+                    Designed and built by
+                    <a href="https://www.sentient.io/" target="_top">Sentient.io</a>
+                    with the help of our contributors.
+                </p>
+                <p>App version: 3.1.1</p>
+            </address>
+            <a href="https://www.sentient.io/" target="_top">
+                <img src="assets/images/sentient-logo.png" alt="Sentient.io logo" class="logo" />
+            </a>
+        </section>
+    </footer>
+</body>
+
+    <!-- <script>
+		/** Detect if this page is opened inside an iframe */
+		if (window.location !== window.parent.location) {
+			/** Hide header and footer */
+			['header', 'footer'].forEach(tag => {
+				document.getElementsByTagName(tag)[0].setAttribute('style', 'display:none')
+			})
+			/** Hide background */
+			document.getElementsByTagName('main')[0].setAttribute('class', 'iframe')
+		}
+	</script> -->
+
+<script src="./config.js"></script>
+<script src="assets/sampleImages.js"></script>
+<script src="functions/eventListeners.js"></script>
+<script src="functions/dataModifiers.js"></script>
+<script src="functions/apiCalls.js"></script>
+
+</html>

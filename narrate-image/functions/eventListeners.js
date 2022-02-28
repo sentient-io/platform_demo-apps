@@ -66,7 +66,6 @@ uploadImg = (files) => {
 }
 
 previewImg = (src, previewPicSize = 600, files) => {
-	console.log(src)
 	let image = new Image()
 	image.src = src
 	image.onload = () => {
@@ -258,7 +257,17 @@ function fetchApiKeyFromSessionStorage() {
 	const k = window.sessionStorage.getItem('sentientApiKey')
 	state.userApiKey = k
 }
-fetchApiKeyFromSessionStorage()
+/**
+ * Detect if the demo app is running locally, if so, use session storage store
+ * api key for developing convence.
+ * */
+ if (
+  location.hostname === 'localhost' ||
+  location.hostname === '127.0.0.1' ||
+  location.hostname === ''
+) {
+  fetchApiKeyFromSessionStorage()
+}
 
 /* +-------------------------+ */
 /* | Narrate the sentence    | */
